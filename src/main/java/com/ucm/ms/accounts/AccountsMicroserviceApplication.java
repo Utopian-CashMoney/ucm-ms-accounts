@@ -1,4 +1,4 @@
-package com.ucm.ms.branches;
+package com.ucm.ms.accounts;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.ucm.ms.branches;
+package com.ucm.ms.accounts;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
