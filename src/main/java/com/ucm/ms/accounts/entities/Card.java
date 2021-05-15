@@ -1,6 +1,9 @@
 package com.ucm.ms.accounts.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -23,14 +26,11 @@ public class Card implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "account_number")
-	private String accountNumber;
-
 	@Column(name = "card_number")
 	private String cardNumber;
 
 	@Column(name = "exp")
-	private LocalDateTime exp;
+	private LocalDate exp;
 
 	@Column(name = "cvv")
 	private String cvv;
@@ -41,20 +41,22 @@ public class Card implements Serializable{
 	private UserAccount userAccount;
 	
 	// Methods
+	public Card() {
+	}
+
+	public Card(String cardNumber, LocalDate exp, String cvv, UserAccount userAccount) {
+		this.cardNumber = cardNumber;
+		this.exp = exp;
+		this.cvv = cvv;
+		this.userAccount = userAccount;
+	}
+
 	public Integer getId() {
 		return id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public String getAccountNumber() {
-		return accountNumber;
-	}
-
-	public void setAccountNumber(String accountNumber) {
-		this.accountNumber = accountNumber;
 	}
 
 	public String getCardNumber() {
@@ -65,11 +67,11 @@ public class Card implements Serializable{
 		this.cardNumber = cardNumber;
 	}
 
-	public LocalDateTime getExp() {
+	public LocalDate getExp() {
 		return exp;
 	}
 
-	public void setExp(LocalDateTime exp) {
+	public void setExp(LocalDate exp) {
 		this.exp = exp;
 	}
 
@@ -83,7 +85,7 @@ public class Card implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, accountNumber, cardNumber, exp, cvv);
+		return Objects.hash(id, cardNumber, exp, cvv);
 	}
 
 	@Override
@@ -93,7 +95,7 @@ public class Card implements Serializable{
 		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Card card = (Card) obj;
-		return Objects.equals(id, card.id) && Objects.equals(accountNumber, card.accountNumber)
+		return Objects.equals(id, card.id)
 				&& Objects.equals(cardNumber, card.cardNumber) && Objects.equals(exp, card.exp)
 				&& Objects.equals(cvv, card.cvv);
 	}

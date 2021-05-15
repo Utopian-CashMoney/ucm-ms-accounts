@@ -24,37 +24,28 @@ public class UserAccount implements Serializable {
 	private Integer balance;
 
 	// Relationships
-	@ManyToOne
-	@JoinColumn(name = "users_id", referencedColumnName = "id")
-	private Integer usersId;
+	//TODO: Many-to-one with User
 
 	@ManyToOne
 	@JoinColumn(name = "account_id", referencedColumnName = "id")
-	private Integer accountId;
+	private Account account;
 
 	// Methods
+	public UserAccount() {
+	}
+
+	public UserAccount(String accountNumber, Integer balance, Account account) {
+		this.accountNumber = accountNumber;
+		this.balance = balance;
+		this.account = account;
+	}
+
 	public String getAccountNumber() {
 		return accountNumber;
 	}
 
 	public void setAccountNumber(String accountNumber) {
 		this.accountNumber = accountNumber;
-	}
-
-	public Integer getUsersId() {
-		return usersId;
-	}
-
-	public void setUsersId(Integer usersId) {
-		this.usersId = usersId;
-	}
-
-	public Integer getAccountId() {
-		return accountId;
-	}
-
-	public void setAccountId(Integer accountId) {
-		this.accountId = accountId;
 	}
 
 	public Integer getBalance() {
@@ -65,9 +56,17 @@ public class UserAccount implements Serializable {
 		this.balance = balance;
 	}
 
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(accountNumber, usersId, accountId, balance);
+		return Objects.hash(accountNumber, balance);
 	}
 
 	@Override
@@ -77,7 +76,7 @@ public class UserAccount implements Serializable {
 		if (obj == null || getClass() != obj.getClass())
 			return false;
 		UserAccount userAccount = (UserAccount) obj;
-		return Objects.equals(accountNumber, userAccount.accountNumber) && Objects.equals(usersId, userAccount.usersId)
-				&& Objects.equals(accountId, userAccount.accountId) && Objects.equals(balance, userAccount.balance);
+		return Objects.equals(accountNumber, userAccount.accountNumber)
+				&& Objects.equals(balance, userAccount.balance);
 	}
 }
