@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  */
 public class DAOTestUtil {
     public static Account account = new Account("TestAccount", "DEBIT", false, 0.0f, false);
-    public static UserAccount userAccount = new UserAccount("ACCOUNTNUMBER", 0, account);
+    public static UserAccount userAccount = new UserAccount("ACCOUNTNUMBER", new BigDecimal("0.0"), account);
     public static Transaction transaction = new Transaction(new BigDecimal("0.0"), LocalDateTime.now(), "SomeTransaction", false, false, userAccount);
     public static Card card = new Card("Cardnumber", LocalDate.now(), "666", userAccount);
 }
