@@ -4,18 +4,9 @@
 -- MySQL Workbench Forward Engineering
 
 -- -----------------------------------------------------
--- Schema utopia_cashmoney
+-- Table `users`
 -- -----------------------------------------------------
-
--- -----------------------------------------------------
--- Schema utopia_cashmoney
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `utopia_cashmoney`;
-
--- -----------------------------------------------------
--- Table `utopia_cashmoney`.`users`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `utopia_cashmoney`.`users`
+CREATE TABLE IF NOT EXISTS `users`
 (
     `id`         INT          NOT NULL AUTO_INCREMENT,
     `username`   VARCHAR(31)  NOT NULL,
@@ -27,15 +18,15 @@ CREATE TABLE IF NOT EXISTS `utopia_cashmoney`.`users`
     PRIMARY KEY (`id`)
 );
 
-CREATE UNIQUE INDEX `email_UNIQUE` ON `utopia_cashmoney`.`users` (`email` ASC);
+CREATE UNIQUE INDEX `email_UNIQUE` ON `users` (`email` ASC);
 
-CREATE UNIQUE INDEX `username_UNIQUE` ON `utopia_cashmoney`.`users` (`username` ASC);
+CREATE UNIQUE INDEX `username_UNIQUE` ON `users` (`username` ASC);
 
 
 -- -----------------------------------------------------
--- Table `utopia_cashmoney`.`loan`
+-- Table `loan`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `utopia_cashmoney`.`loan`
+CREATE TABLE IF NOT EXISTS `loan`
 (
     `id`            INT            NOT NULL,
     `max_amount`    DECIMAL(20, 2) NOT NULL,
@@ -46,9 +37,9 @@ CREATE TABLE IF NOT EXISTS `utopia_cashmoney`.`loan`
 
 
 -- -----------------------------------------------------
--- Table `utopia_cashmoney`.`user_loan`
+-- Table `user_loan`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `utopia_cashmoney`.`user_loan`
+CREATE TABLE IF NOT EXISTS `user_loan`
 (
     `loan_id`    INT            NOT NULL,
     `users_id`   INT            NOT NULL,
@@ -57,25 +48,25 @@ CREATE TABLE IF NOT EXISTS `utopia_cashmoney`.`user_loan`
     PRIMARY KEY (`loan_id`, `users_id`),
     CONSTRAINT `fk_loan_has_users_loan1`
         FOREIGN KEY (`loan_id`)
-            REFERENCES `utopia_cashmoney`.`loan` (`id`)
+            REFERENCES `loan` (`id`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION,
     CONSTRAINT `fk_loan_has_users_users1`
         FOREIGN KEY (`users_id`)
-            REFERENCES `utopia_cashmoney`.`users` (`id`)
+            REFERENCES `users` (`id`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
 );
 
-CREATE INDEX `fk_loan_has_users_users1_idx` ON `utopia_cashmoney`.`user_loan` (`users_id` ASC);
+CREATE INDEX `fk_loan_has_users_users1_idx` ON `user_loan` (`users_id` ASC);
 
-CREATE INDEX `fk_loan_has_users_loan1_idx` ON `utopia_cashmoney`.`user_loan` (`loan_id` ASC);
+CREATE INDEX `fk_loan_has_users_loan1_idx` ON `user_loan` (`loan_id` ASC);
 
 
 -- -----------------------------------------------------
--- Table `utopia_cashmoney`.`branch`
+-- Table `branch`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `utopia_cashmoney`.`branch`
+CREATE TABLE IF NOT EXISTS `branch`
 (
     `location_number` INT          NOT NULL,
     `name`            VARCHAR(255) NOT NULL,
@@ -89,9 +80,9 @@ CREATE TABLE IF NOT EXISTS `utopia_cashmoney`.`branch`
 
 
 -- -----------------------------------------------------
--- Table `utopia_cashmoney`.`banker`
+-- Table `banker`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `utopia_cashmoney`.`banker`
+CREATE TABLE IF NOT EXISTS `banker`
 (
     `id`                     INT          NOT NULL,
     `branch_location_number` INT          NOT NULL,
@@ -99,18 +90,18 @@ CREATE TABLE IF NOT EXISTS `utopia_cashmoney`.`banker`
     PRIMARY KEY (`id`),
     CONSTRAINT `fk_banker_branch1`
         FOREIGN KEY (`branch_location_number`)
-            REFERENCES `utopia_cashmoney`.`branch` (`location_number`)
+            REFERENCES `branch` (`location_number`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
 );
 
-CREATE INDEX `fk_banker_branch1_idx` ON `utopia_cashmoney`.`banker` (`branch_location_number` ASC);
+CREATE INDEX `fk_banker_branch1_idx` ON `banker` (`branch_location_number` ASC);
 
 
 -- -----------------------------------------------------
--- Table `utopia_cashmoney`.`appointment`
+-- Table `appointment`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `utopia_cashmoney`.`appointment`
+CREATE TABLE IF NOT EXISTS `appointment`
 (
     `id`                     INT          NOT NULL AUTO_INCREMENT,
     `branch_location_number` INT          NOT NULL,
@@ -121,47 +112,47 @@ CREATE TABLE IF NOT EXISTS `utopia_cashmoney`.`appointment`
     PRIMARY KEY (`id`),
     CONSTRAINT `fk_branch_has_users_branch1`
         FOREIGN KEY (`branch_location_number`)
-            REFERENCES `utopia_cashmoney`.`branch` (`location_number`)
+            REFERENCES `branch` (`location_number`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION,
     CONSTRAINT `fk_branch_has_users_users1`
         FOREIGN KEY (`users_id`)
-            REFERENCES `utopia_cashmoney`.`users` (`id`)
+            REFERENCES `users` (`id`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION,
     CONSTRAINT `fk_appointment_banker1`
         FOREIGN KEY (`banker_id`)
-            REFERENCES `utopia_cashmoney`.`banker` (`id`)
+            REFERENCES `banker` (`id`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
 );
 
-CREATE INDEX `fk_branch_has_users_users1_idx` ON `utopia_cashmoney`.`appointment` (`users_id` ASC);
+CREATE INDEX `fk_branch_has_users_users1_idx` ON `appointment` (`users_id` ASC);
 
-CREATE INDEX `fk_branch_has_users_branch1_idx` ON `utopia_cashmoney`.`appointment` (`branch_location_number` ASC);
+CREATE INDEX `fk_branch_has_users_branch1_idx` ON `appointment` (`branch_location_number` ASC);
 
-CREATE INDEX `fk_appointment_banker1_idx` ON `utopia_cashmoney`.`appointment` (`banker_id` ASC);
+CREATE INDEX `fk_appointment_banker1_idx` ON `appointment` (`banker_id` ASC);
 
 
 -- -----------------------------------------------------
--- Table `utopia_cashmoney`.`account`
+-- Table `account`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `utopia_cashmoney`.`account`
+CREATE TABLE IF NOT EXISTS `account`
 (
     `id`           INT                      NOT NULL AUTO_INCREMENT,
     `name`         VARCHAR(45)              NOT NULL,
-    `type`         ENUM ('CREDIT', 'DEBIT') NOT NULL,
-    `allow_credit` TINYINT                  NOT NULL DEFAULT 0,
+    `type`         VARCHAR(255)             NOT NULL,
+    `allow_credit` BOOLEAN                  NOT NULL DEFAULT 0,
     `credit_limit` DECIMAL(20, 2)           NOT NULL DEFAULT 0,
-    `allow_cards`  TINYINT                  NOT NULL DEFAULT 0,
+    `allow_cards`  BOOLEAN                  NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`)
 );
 
 
 -- -----------------------------------------------------
--- Table `utopia_cashmoney`.`user_account`
+-- Table `user_account`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `utopia_cashmoney`.`user_account`
+CREATE TABLE IF NOT EXISTS `user_account`
 (
     `account_number` VARCHAR(31)    NOT NULL,
     `users_id`       INT            NOT NULL,
@@ -170,60 +161,60 @@ CREATE TABLE IF NOT EXISTS `utopia_cashmoney`.`user_account`
     PRIMARY KEY (`account_number`),
     CONSTRAINT `fk_users_has_account_users1`
         FOREIGN KEY (`users_id`)
-            REFERENCES `utopia_cashmoney`.`users` (`id`)
+            REFERENCES `users` (`id`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION,
     CONSTRAINT `fk_users_has_account_account1`
         FOREIGN KEY (`account_id`)
-            REFERENCES `utopia_cashmoney`.`account` (`id`)
+            REFERENCES `account` (`id`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
 );
 
-CREATE INDEX `fk_users_has_account_account1_idx` ON `utopia_cashmoney`.`user_account` (`account_id` ASC);
+CREATE INDEX `fk_users_has_account_account1_idx` ON `user_account` (`account_id` ASC);
 
-CREATE INDEX `fk_users_has_account_users1_idx` ON `utopia_cashmoney`.`user_account` (`users_id` ASC);
+CREATE INDEX `fk_users_has_account_users1_idx` ON `user_account` (`users_id` ASC);
 
 
 -- -----------------------------------------------------
--- Table `utopia_cashmoney`.`transaction`
+-- Table `transaction`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `utopia_cashmoney`.`transaction`
+CREATE TABLE IF NOT EXISTS `transaction`
 (
     `id`             INT            NOT NULL AUTO_INCREMENT,
     `account_number` VARCHAR(31)    NOT NULL,
     `amount`         DECIMAL(20, 2) NOT NULL,
     `timestamp`      TIMESTAMP      NOT NULL,
     `name`           VARCHAR(255)   NOT NULL,
-    `is_processed`   TINYINT        NOT NULL,
-    `is_cancelled`   TINYINT        NOT NULL,
+    `is_processed`   BOOLEAN        NOT NULL,
+    `is_cancelled`   BOOLEAN        NOT NULL,
     PRIMARY KEY (`id`),
     CONSTRAINT `fk_transaction_user_account1`
         FOREIGN KEY (`account_number`)
-            REFERENCES `utopia_cashmoney`.`user_account` (`account_number`)
+            REFERENCES `user_account` (`account_number`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
 );
 
-CREATE INDEX `fk_transaction_user_account1_idx` ON `utopia_cashmoney`.`transaction` (`account_number` ASC);
+CREATE INDEX `fk_transaction_user_account1_idx` ON `transaction` (`account_number` ASC);
 
 
 -- -----------------------------------------------------
--- Table `utopia_cashmoney`.`card`
+-- Table `card`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `utopia_cashmoney`.`card`
+CREATE TABLE IF NOT EXISTS `card`
 (
     `id`             INT         NOT NULL AUTO_INCREMENT,
     `account_number` VARCHAR(31) NOT NULL,
     `card_number`    VARCHAR(31) NOT NULL,
     `exp`            DATE        NOT NULL,
-    `cvv`            CHAR(3)     NOT NULL,
+    `cvv`            VARCHAR(3)  NOT NULL,
     PRIMARY KEY (`id`),
     CONSTRAINT `fk_card_user_account1`
         FOREIGN KEY (`account_number`)
-            REFERENCES `utopia_cashmoney`.`user_account` (`account_number`)
+            REFERENCES `user_account` (`account_number`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
 );
 
-CREATE INDEX `fk_card_user_account1_idx` ON `utopia_cashmoney`.`card` (`account_number` ASC);
+CREATE INDEX `fk_card_user_account1_idx` ON `card` (`account_number` ASC);

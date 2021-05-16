@@ -1,6 +1,7 @@
 package com.ucm.ms.accounts.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -21,7 +22,7 @@ public class UserAccount implements Serializable {
 	private String accountNumber;
 
 	@Column(name = "balance")
-	private Integer balance;
+	private BigDecimal balance;
 
 	// Relationships
 	//TODO: Many-to-one with User
@@ -34,7 +35,7 @@ public class UserAccount implements Serializable {
 	public UserAccount() {
 	}
 
-	public UserAccount(String accountNumber, Integer balance, Account account) {
+	public UserAccount(String accountNumber, BigDecimal balance, Account account) {
 		this.accountNumber = accountNumber;
 		this.balance = balance;
 		this.account = account;
@@ -48,11 +49,11 @@ public class UserAccount implements Serializable {
 		this.accountNumber = accountNumber;
 	}
 
-	public Integer getBalance() {
+	public BigDecimal getBalance() {
 		return balance;
 	}
 
-	public void setBalance(Integer balance) {
+	public void setBalance(BigDecimal balance) {
 		this.balance = balance;
 	}
 
