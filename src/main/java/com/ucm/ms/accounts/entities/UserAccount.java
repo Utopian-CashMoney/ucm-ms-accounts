@@ -25,7 +25,9 @@ public class UserAccount implements Serializable {
 	private BigDecimal balance;
 
 	// Relationships
-	//TODO: Many-to-one with User
+	@ManyToOne
+	@JoinColumn(name="users_id", referencedColumnName = "id")
+	private User user;
 
 	@ManyToOne
 	@JoinColumn(name = "account_id", referencedColumnName = "id")
@@ -65,19 +67,24 @@ public class UserAccount implements Serializable {
 		this.account = account;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(accountNumber, balance);
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null || getClass() != obj.getClass())
-			return false;
-		UserAccount userAccount = (UserAccount) obj;
-		return Objects.equals(accountNumber, userAccount.accountNumber)
-				&& Objects.equals(balance, userAccount.balance);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		UserAccount that = (UserAccount) o;
+		return Objects.equals(accountNumber, that.accountNumber) && Objects.equals(balance, that.balance) && Objects.equals(user, that.user) && Objects.equals(account, that.account);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(accountNumber, balance, user, account);
 	}
 }
