@@ -24,6 +24,7 @@ class AccountDAOTest {
     void sanityTest() {
         Account account = accountDAO.getOne(1);
         assertNotNull(account);
+        assertEquals(1, account.getId());
     }
 
     /**

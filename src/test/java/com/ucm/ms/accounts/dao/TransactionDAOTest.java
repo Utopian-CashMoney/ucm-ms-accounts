@@ -23,5 +23,6 @@ class TransactionDAOTest {
     void sanityTest() {
         Transaction transaction = transactionDAO.getOne(1);
         assertNotNull(transaction);
+        assertEquals(1, transaction.getId());
     }
 }

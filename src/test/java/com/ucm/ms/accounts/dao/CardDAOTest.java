@@ -26,5 +26,6 @@ class CardDAOTest {
     void sanityTest() {
         Card card = cardDAO.getOne(1);
         assertNotNull(card);
+        assertEquals(1, card.getId());
     }
 }
