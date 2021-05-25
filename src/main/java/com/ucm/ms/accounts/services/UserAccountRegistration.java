@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 /**
@@ -44,12 +45,12 @@ public class UserAccountRegistration {
         if(user == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Authentication token failed to resolve to a valid user.");
         }
-        Account account;
-        try {
-            account = accountDAO.getOne(userAccountDTO.getAccountID());
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No account with that ID.", e);
+
+        Account account = accountDAO.findById(userAccountDTO.getAccountID()).orElse(null);
+        if(account == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No account with that ID.");
         }
+
 
         userAccount.setAccount(account);
         userAccount.setUser(user);
