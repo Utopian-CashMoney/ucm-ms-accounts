@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `users`
     `phone`      VARCHAR(31)  NULL,
     `first_name` VARCHAR(63)  NOT NULL,
     `last_name`  VARCHAR(63)  NOT NULL,
-    `is_active`  TINYINT      NOT NULL,
+    `is_active`  BOOLEAN      NOT NULL,
     PRIMARY KEY (`id`)
 );
 

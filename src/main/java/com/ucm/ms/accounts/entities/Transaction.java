@@ -17,25 +17,25 @@ public class Transaction implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", nullable = false)
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS][.SS][.S]")
     private LocalDateTime timestamp;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "is_processed")
+    @Column(name = "is_processed", nullable = false)
     private Boolean processed;
 
-    @Column(name = "is_cancelled")
+    @Column(name = "is_cancelled", nullable = false)
     private Boolean cancelled;
 
     //Relationships
     @ManyToOne
-    @JoinColumn(name = "account_number", referencedColumnName = "account_number")
+    @JoinColumn(name = "account_number", referencedColumnName = "account_number", nullable = false)
     private UserAccount userAccount;
 
     //Methods

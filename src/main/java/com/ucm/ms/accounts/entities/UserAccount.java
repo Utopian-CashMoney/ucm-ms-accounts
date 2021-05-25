@@ -1,5 +1,7 @@
 package com.ucm.ms.accounts.entities;
 
+import com.ucm.lib.entities.User;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -11,8 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.ucm.lib.entities.User;
-
 @Entity
 @Table(name = "user_account")
 public class UserAccount implements Serializable {
@@ -20,29 +20,30 @@ public class UserAccount implements Serializable {
 
 	// Data
 	@Id
-	@Column(name = "account_number")
+	@Column(name = "account_number", nullable = false)
 	private String accountNumber;
 
-	@Column(name = "balance")
+	@Column(name = "balance", nullable = false)
 	private BigDecimal balance;
 
 	// Relationships
-	@ManyToOne
-	@JoinColumn(name="users_id", referencedColumnName = "id")
+	@ManyToOne(targetEntity = User.class)
+	@JoinColumn(name="users_id", referencedColumnName = "id", nullable = false)
 	private User user;
 
 	@ManyToOne
-	@JoinColumn(name = "account_id", referencedColumnName = "id")
+	@JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
 	private Account account;
 
 	// Methods
 	public UserAccount() {
 	}
 
-	public UserAccount(String accountNumber, BigDecimal balance, Account account) {
+	public UserAccount(String accountNumber, BigDecimal balance, Account account, User user) {
 		this.accountNumber = accountNumber;
 		this.balance = balance;
 		this.account = account;
+		this.user = user;
 	}
 
 	public String getAccountNumber() {

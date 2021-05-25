@@ -26,18 +26,18 @@ public class Card implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "card_number")
+	@Column(name = "card_number", nullable = false)
 	private String cardNumber;
 
-	@Column(name = "exp")
+	@Column(name = "exp", nullable = false)
 	private LocalDate exp;
 
-	@Column(name = "cvv")
+	@Column(name = "cvv", nullable = false)
 	private String cvv;
 
 	// Relationships
 	@ManyToOne
-	@JoinColumn(name = "account_number", referencedColumnName = "account_Number")
+	@JoinColumn(name = "account_number", referencedColumnName = "account_Number", nullable = false)
 	private UserAccount userAccount;
 	
 	// Methods
