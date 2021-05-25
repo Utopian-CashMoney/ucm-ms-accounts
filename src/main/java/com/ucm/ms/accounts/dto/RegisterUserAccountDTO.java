@@ -1,11 +1,9 @@
 package com.ucm.ms.accounts.dto;
 
-import com.ucm.ms.accounts.entities.UserAccount;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.validation.constraints.NotNull;
 
-import java.math.BigDecimal;
-
-public class UserAccountDTO {
+public class RegisterUserAccountDTO {
+    @NotNull
     private Integer accountID;
 
     public Integer getAccountID() {

@@ -1,6 +1,7 @@
 package com.ucm.ms.accounts.controllers;
 
-import com.ucm.ms.accounts.dto.UserAccountDTO;
+import com.ucm.ms.accounts.dto.RegisterUserAccountDTO;
+import com.ucm.ms.accounts.dto.RegisterUserAccountRespDTO;
 import com.ucm.ms.accounts.entities.UserAccount;
 import com.ucm.ms.accounts.services.UserAccountRegistration;
 import org.modelmapper.ModelMapper;
@@ -27,8 +28,8 @@ public class UserAccountsController {
      * @return UserAccount
      */
     @PostMapping()
-    public ResponseEntity<UserAccount> post(@RequestBody UserAccountDTO userAccountDTO, @RequestHeader("Authorization") String headerAuth) {
+    public ResponseEntity<RegisterUserAccountRespDTO> post(@RequestBody RegisterUserAccountDTO registerUserAccountDTO, @RequestHeader("Authorization") String headerAuth) {
         String token = headerAuth.substring(7);
-        return new ResponseEntity<>(userAccountRegistration.register(userAccountDTO, token), HttpStatus.CREATED);
+        return new ResponseEntity<>(userAccountRegistration.register(registerUserAccountDTO, token), HttpStatus.CREATED);
     }
 }

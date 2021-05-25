@@ -5,7 +5,8 @@ import com.ucm.lib.entities.User;
 import com.ucm.lib.services.JwtUtil;
 import com.ucm.ms.accounts.dao.AccountDAO;
 import com.ucm.ms.accounts.dao.UserAccountDAO;
-import com.ucm.ms.accounts.dto.UserAccountDTO;
+import com.ucm.ms.accounts.dto.RegisterUserAccountDTO;
+import com.ucm.ms.accounts.dto.RegisterUserAccountRespDTO;
 import com.ucm.ms.accounts.entities.Account;
 import com.ucm.ms.accounts.entities.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.NoSuchElementException;
 import java.util.Random;
 
 /**
@@ -39,14 +38,14 @@ public class UserAccountRegistration {
         this.jwtUtil = jwtUtil;
     }
 
-    public UserAccount register(UserAccountDTO userAccountDTO, String token) {
+    public RegisterUserAccountRespDTO register(RegisterUserAccountDTO registerUserAccountDTO, String token) {
         UserAccount userAccount = new UserAccount();
         User user = userDAO.findByUsername(jwtUtil.getUserNameFromJwtToken(token));
         if(user == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Authentication token failed to resolve to a valid user.");
         }
 
-        Account account = accountDAO.findById(userAccountDTO.getAccountID()).orElse(null);
+        Account account = accountDAO.findById(registerUserAccountDTO.getAccountID()).orElse(null);
         if(account == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No account with that ID.");
         }
@@ -57,7 +56,11 @@ public class UserAccountRegistration {
         userAccount.setBalance(new BigDecimal(0));
         userAccount.setAccountNumber(randomAccountNumber());
         userAccountDAO.save(userAccount);
-        return userAccount;
+        RegisterUserAccountRespDTO registerUserAccountRespDTO = new RegisterUserAccountRespDTO();
+        registerUserAccountRespDTO.setAccountNumber(userAccount.getAccountNumber());
+        registerUserAccountRespDTO.setAccountType(userAccount.getAccount().getType());
+        registerUserAccountRespDTO.setAccountName(userAccount.getAccount().getName());
+        return registerUserAccountRespDTO;
     }
 
     protected String randomAccountNumber() {
