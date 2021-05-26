@@ -4,7 +4,7 @@ INSERT INTO `account` VALUES ( 2, 'Primary Savings', 'DEBIT', false, 0, 0 );
 INSERT INTO `account` VALUES ( 3, 'Primary Credit', 'CREDIT', true, 500, 1 );
 
 --Users
-INSERT INTO `users` VALUES ( 1, 'username', 'email@website.com', 'unhashed_password', null, 'John', 'Doe' );
+INSERT INTO `users` VALUES ( 1, 'username', 'email@website.com', 'unhashed_password', null, 'John', 'Doe', 1);
 
 --UserAccounts
 INSERT INTO `user_account` VALUES ('CHKACCTNMBR', 1, 1, 125.32);

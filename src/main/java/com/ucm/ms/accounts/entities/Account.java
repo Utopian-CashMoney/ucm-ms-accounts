@@ -18,20 +18,20 @@ public class Account implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     //ENUM: ('CREDIT', 'DEBIT')
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private String type;
 
-    @Column(name = "allow_credit")
+    @Column(name = "allow_credit", nullable = false)
     private Boolean allowCredit;
 
-    @Column(name = "credit_limit")
+    @Column(name = "credit_limit", nullable = false)
     private BigDecimal creditLimit;
 
-    @Column(name = "allow_cards")
+    @Column(name = "allow_cards", nullable = false)
     private Boolean allowCards;
 
     //Relationships

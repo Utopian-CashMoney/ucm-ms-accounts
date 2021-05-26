@@ -1,5 +1,7 @@
 package com.ucm.ms.accounts.entities;
 
+import com.ucm.lib.entities.User;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -18,27 +20,30 @@ public class UserAccount implements Serializable {
 
 	// Data
 	@Id
-	@Column(name = "account_number")
+	@Column(name = "account_number", nullable = false)
 	private String accountNumber;
 
-	@Column(name = "balance")
+	@Column(name = "balance", nullable = false)
 	private BigDecimal balance;
 
 	// Relationships
-	//TODO: Many-to-one with User
+	@ManyToOne(targetEntity = User.class)
+	@JoinColumn(name="users_id", referencedColumnName = "id", nullable = false)
+	private User user;
 
 	@ManyToOne
-	@JoinColumn(name = "account_id", referencedColumnName = "id")
+	@JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
 	private Account account;
 
 	// Methods
 	public UserAccount() {
 	}
 
-	public UserAccount(String accountNumber, BigDecimal balance, Account account) {
+	public UserAccount(String accountNumber, BigDecimal balance, Account account, User user) {
 		this.accountNumber = accountNumber;
 		this.balance = balance;
 		this.account = account;
+		this.user = user;
 	}
 
 	public String getAccountNumber() {
@@ -65,19 +70,24 @@ public class UserAccount implements Serializable {
 		this.account = account;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(accountNumber, balance);
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null || getClass() != obj.getClass())
-			return false;
-		UserAccount userAccount = (UserAccount) obj;
-		return Objects.equals(accountNumber, userAccount.accountNumber)
-				&& Objects.equals(balance, userAccount.balance);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		UserAccount that = (UserAccount) o;
+		return Objects.equals(accountNumber, that.accountNumber) && Objects.equals(balance, that.balance) && Objects.equals(user, that.user) && Objects.equals(account, that.account);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(accountNumber, balance, user, account);
 	}
 }

@@ -22,10 +22,9 @@ class AccountDAOTest {
      */
     @Test
     void sanityTest() {
-        Account account = DAOTestUtil.account;
-        account = accountDAO.save(account);
-        Account is = accountDAO.getOne(account.getId());
-        assertEquals(is, account);
+        Account account = accountDAO.getOne(1);
+        assertNotNull(account);
+        assertEquals(1, account.getId());
     }
 
     /**

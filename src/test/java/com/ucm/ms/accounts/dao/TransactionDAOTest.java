@@ -21,9 +21,8 @@ class TransactionDAOTest {
      */
     @Test
     void sanityTest() {
-        Transaction transaction = DAOTestUtil.transaction;
-        transaction = transactionDAO.save(transaction);
-        Transaction get = transactionDAO.getOne(transaction.getId());
-        assertEquals(get, transaction);
+        Transaction transaction = transactionDAO.getOne(1);
+        assertNotNull(transaction);
+        assertEquals(1, transaction.getId());
     }
 }
