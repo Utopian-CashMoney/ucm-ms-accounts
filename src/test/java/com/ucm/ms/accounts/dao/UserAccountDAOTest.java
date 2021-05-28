@@ -5,6 +5,7 @@ import com.ucm.ms.accounts.entities.Card;
 import com.ucm.ms.accounts.entities.UserAccount;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@AutoConfigureTestDatabase
 class UserAccountDAOTest {
     @Autowired
     private UserAccountDAO userAccountDAO;

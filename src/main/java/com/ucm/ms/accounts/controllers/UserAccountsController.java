@@ -52,7 +52,7 @@ public class UserAccountsController {
             modelAndView.setViewName("emailLinkExpired");
         }
         else {
-            UserAccount userAccount = userAccountDAO.getOne(userAccountConfirmation.getUserAccountID());
+            UserAccount userAccount = userAccountConfirmation.getUserAccount();
             userAccount.setActive(true);
             userAccountDAO.save(userAccount);
             modelAndView.setViewName("emailActivated");

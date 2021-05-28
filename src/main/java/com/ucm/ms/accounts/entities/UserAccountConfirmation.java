@@ -12,9 +12,7 @@ public class UserAccountConfirmation implements Serializable {
     private static final long serialVersionUID = 2237038858049091645L;
 
     @Id
-    @OneToOne(targetEntity = UserAccount.class)
-    @JoinColumn(name="user_account_id", referencedColumnName = "account_number", nullable = false)
-    private String userAccountID;
+    private String userAccountId;
 
     @Column(nullable = false)
     private String code;
@@ -22,12 +20,25 @@ public class UserAccountConfirmation implements Serializable {
     @Column(nullable = false)
     private LocalDateTime expires;
 
-    public String getUserAccountID() {
-        return userAccountID;
+    @OneToOne
+    @JoinColumn(name="user_account_id", referencedColumnName = "account_number")
+    @MapsId
+    private UserAccount userAccount;
+
+    public String getUserAccountId() {
+        return userAccountId;
     }
 
-    public void setUserAccountID(String userAccountID) {
-        this.userAccountID = userAccountID;
+    public void setUserAccountId(String userAccountId) {
+        this.userAccountId = userAccountId;
+    }
+
+    public UserAccount getUserAccount() {
+        return userAccount;
+    }
+
+    public void setUserAccount(UserAccount userAccount) {
+        this.userAccount = userAccount;
     }
 
     public String getCode() {
@@ -51,11 +62,11 @@ public class UserAccountConfirmation implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserAccountConfirmation that = (UserAccountConfirmation) o;
-        return Objects.equals(userAccountID, that.userAccountID) && Objects.equals(code, that.code) && Objects.equals(expires, that.expires);
+        return Objects.equals(userAccountId, that.userAccountId) && Objects.equals(code, that.code) && Objects.equals(expires, that.expires) && Objects.equals(userAccount, that.userAccount);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userAccountID, code, expires);
+        return Objects.hash(userAccountId, code, expires, userAccount);
     }
 }

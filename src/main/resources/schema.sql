@@ -209,7 +209,7 @@ CREATE TABLE IF NOT EXISTS `user_account_confirmation` (
         FOREIGN KEY (`user_account_id`)
             REFERENCES `user_account` (`account_number`)
             ON DELETE NO ACTION
-            ON UPDATE NO ACTION,
+            ON UPDATE NO ACTION
 );
 
 CREATE INDEX `fk_user_account_confirmation_has_user_account1_idx` ON `user_account_confirmation` (`user_account_id` ASC);
