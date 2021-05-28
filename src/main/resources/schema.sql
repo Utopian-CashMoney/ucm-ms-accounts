@@ -179,6 +179,7 @@ CREATE TABLE IF NOT EXISTS `user_account`
     `users_id`       INT            NOT NULL,
     `account_id`     INT            NOT NULL,
     `balance`        DECIMAL(20, 2) NOT NULL,
+    `active`         BOOLEAN        NOT NULL,
     PRIMARY KEY (`account_number`),
     CONSTRAINT `fk_users_has_account_users1`
         FOREIGN KEY (`users_id`)
@@ -195,6 +196,24 @@ CREATE TABLE IF NOT EXISTS `user_account`
 CREATE INDEX `fk_users_has_account_account1_idx` ON `user_account` (`account_id` ASC);
 
 CREATE INDEX `fk_users_has_account_users1_idx` ON `user_account` (`users_id` ASC);
+
+-- -----------------------------------------------------
+-- Table `user_account_confirmation`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `user_account_confirmation` (
+    `user_account_id`   VARCHAR(31)     NOT NULL,
+    `code`              VARCHAR(255)    NOT NULL,
+    `expires`           DATETIME        NOT NULL,
+    PRIMARY KEY (`user_account_id`),
+    CONSTRAINT `fk_user_account_confirmation_has_user_account1`
+        FOREIGN KEY (`user_account_id`)
+            REFERENCES `user_account` (`account_number`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION,
+);
+
+CREATE INDEX `fk_user_account_confirmation_has_user_account1_idx` ON `user_account_confirmation` (`user_account_id` ASC);
+CREATE INDEX `code_UNIQUE` ON `user_account_confirmation` (`code`);
 
 
 -- -----------------------------------------------------
