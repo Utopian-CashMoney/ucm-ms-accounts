@@ -61,6 +61,7 @@ class UserAccountRegistrationTest {
         User user = new User();
         user.setId(1);
         user.setUsername("username");
+        user.setEmail("user@website.com"); //Needed because else an IllegalArgumentException will be thrown.
         when(jwtUtil.getUserNameFromJwtToken(token)).thenReturn(user.getUsername());
         when(userDAO.findByUsername(user.getUsername())).thenReturn(user);
 
