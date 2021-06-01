@@ -4,8 +4,6 @@ import com.ucm.ms.accounts.dao.UserAccountConfirmationDAO;
 import com.ucm.ms.accounts.dao.UserAccountDAO;
 import com.ucm.ms.accounts.dto.RegisterUserAccountDTO;
 import com.ucm.ms.accounts.dto.RegisterUserAccountRespDTO;
-import com.ucm.ms.accounts.entities.UserAccount;
-import com.ucm.ms.accounts.entities.UserAccountConfirmation;
 import com.ucm.ms.accounts.services.UserAccountRegistration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,21 +11,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.LocalDateTime;
-
 @RestController
 @RequestMapping("/user_account")
 @CrossOrigin
 public class UserAccountsController {
     private final UserAccountRegistration userAccountRegistration;
-    private final UserAccountConfirmationDAO userAccountConfirmationDAO;
-    private final UserAccountDAO userAccountDAO;
 
     @Autowired
-    public UserAccountsController(UserAccountRegistration userAccountRegistration, UserAccountConfirmationDAO userAccountConfirmationDAO, UserAccountDAO userAccountDAO) {
+    public UserAccountsController(UserAccountRegistration userAccountRegistration) {
         this.userAccountRegistration = userAccountRegistration;
-        this.userAccountConfirmationDAO = userAccountConfirmationDAO;
-        this.userAccountDAO = userAccountDAO;
     }
 
     /**
@@ -41,19 +33,16 @@ public class UserAccountsController {
         return new ResponseEntity<>(userAccountRegistration.register(registerUserAccountDTO, token), HttpStatus.CREATED);
     }
 
+    /**
+     * GET /api/user_account/confirmation?token=...
+     * @param modelAndView Page to return to the user.
+     * @param confirmationToken Confirmation token.
+     * @return Page for end user.
+     */
     @GetMapping(path = "/confirmation")
-    public ModelAndView confirmUserAccount(ModelAndView modelAndView, @RequestParam("token")String confirmationToken) {
-        UserAccountConfirmation userAccountConfirmation = userAccountConfirmationDAO.findFirstByCode(confirmationToken);
-
-        if (userAccountConfirmation.getExpires().isAfter(LocalDateTime.now())) {
-            modelAndView.setViewName("emailLinkExpired");
-        }
-        else {
-            UserAccount userAccount = userAccountConfirmation.getUserAccount();
-            userAccount.setActive(true);
-            userAccountDAO.save(userAccount);
-            modelAndView.setViewName("emailActivated");
-        }
+    public ModelAndView confirmUserAccount(ModelAndView modelAndView, @RequestParam("token") String confirmationToken) {
+        if(userAccountRegistration.confirm(confirmationToken)) modelAndView.setViewName("emailActivated");
+        else modelAndView.setViewName("emailLinkExpired");
         return modelAndView;
     }
 }

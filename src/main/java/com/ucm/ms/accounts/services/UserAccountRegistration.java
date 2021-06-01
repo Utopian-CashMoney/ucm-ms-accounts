@@ -72,7 +72,6 @@ public class UserAccountRegistration {
         userAccountDAO.save(userAccount);
 
         UserAccountConfirmation userAccountConfirmation = generateConfirmation(userAccount);
-        userAccountConfirmationDAO.save(userAccountConfirmation);
 
         try {
             Context context = new Context();
@@ -91,7 +90,32 @@ public class UserAccountRegistration {
     }
 
     /**
-     * Generates a UserAccountConfirmation to the user. Does not save.
+     * Activate an account.
+     * @param confirmationToken The token of the account to activate.
+     * @return True on success, false if expired.
+     */
+    public Boolean confirm(String confirmationToken) {
+        UserAccountConfirmation userAccountConfirmation = userAccountConfirmationDAO.findFirstByCode(confirmationToken);
+        if(userAccountConfirmation == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No confirmation found with that token.");
+        }
+        if (userAccountConfirmation.getExpires().isBefore(LocalDateTime.now())) {
+            userAccountConfirmationDAO.delete(userAccountConfirmation);
+            generateConfirmation(userAccountDAO.getOne(userAccountConfirmation.getUserAccountId()));
+            return false;
+        }
+        else {
+            UserAccount userAccount = userAccountConfirmation.getUserAccount();
+            userAccount.setActive(true);
+            userAccountDAO.save(userAccount);
+            userAccountConfirmationDAO.delete(userAccountConfirmation);
+            return true;
+        }
+
+    }
+
+    /**
+     * Generates a UserAccountConfirmation to the user, then saves it.
      * @param userAccount The UserAccount to confirm.
      * @return A UserAccountConfirmation.
      */
@@ -104,7 +128,7 @@ public class UserAccountRegistration {
             s = UUID.randomUUID().toString();
             userAccountConfirmation.setCode(s);
         } while(userAccountConfirmationDAO.findFirstByCode(s) != null);
-        return userAccountConfirmation;
+        return userAccountConfirmationDAO.save(userAccountConfirmation);
     }
 
     protected String randomAccountNumber() {
