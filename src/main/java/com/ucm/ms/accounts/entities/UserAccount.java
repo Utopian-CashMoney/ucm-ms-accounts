@@ -26,6 +26,9 @@ public class UserAccount implements Serializable {
 	@Column(name = "balance", nullable = false)
 	private BigDecimal balance;
 
+	@Column(name="active", nullable = false)
+	private Boolean active;
+
 	// Relationships
 	@ManyToOne(targetEntity = User.class)
 	@JoinColumn(name="users_id", referencedColumnName = "id", nullable = false)
@@ -78,16 +81,24 @@ public class UserAccount implements Serializable {
 		this.user = user;
 	}
 
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		UserAccount that = (UserAccount) o;
-		return Objects.equals(accountNumber, that.accountNumber) && Objects.equals(balance, that.balance) && Objects.equals(user, that.user) && Objects.equals(account, that.account);
+		return Objects.equals(accountNumber, that.accountNumber) && Objects.equals(balance, that.balance) && Objects.equals(active, that.active) && Objects.equals(user, that.user) && Objects.equals(account, that.account);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(accountNumber, balance, user, account);
+		return Objects.hash(accountNumber, balance, active, user, account);
 	}
 }
