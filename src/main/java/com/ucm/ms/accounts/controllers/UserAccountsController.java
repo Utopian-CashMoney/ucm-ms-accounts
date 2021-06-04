@@ -4,7 +4,12 @@ import com.ucm.ms.accounts.dao.UserAccountConfirmationDAO;
 import com.ucm.ms.accounts.dao.UserAccountDAO;
 import com.ucm.ms.accounts.dto.RegisterUserAccountDTO;
 import com.ucm.ms.accounts.dto.RegisterUserAccountRespDTO;
+import com.ucm.ms.accounts.entities.UserAccount;
 import com.ucm.ms.accounts.services.UserAccountRegistration;
+import com.ucm.ms.accounts.services.UserAccountSearch;
+
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +21,12 @@ import org.springframework.web.servlet.ModelAndView;
 @CrossOrigin
 public class UserAccountsController {
     private final UserAccountRegistration userAccountRegistration;
+    private final UserAccountSearch userAccountSearch;
 
     @Autowired
-    public UserAccountsController(UserAccountRegistration userAccountRegistration) {
+    public UserAccountsController(UserAccountRegistration userAccountRegistration, UserAccountSearch userAccountSearch) {
         this.userAccountRegistration = userAccountRegistration;
+        this.userAccountSearch = userAccountSearch;
     }
 
     /**
@@ -44,5 +51,19 @@ public class UserAccountsController {
         if(userAccountRegistration.confirm(confirmationToken)) modelAndView.setViewName("emailActivated");
         else modelAndView.setViewName("emailLinkExpired");
         return modelAndView;
+    }
+    
+    /**
+     * GET /api/user_account - Return all user accounts
+     * @return All user accounts
+     */
+    @GetMapping
+    public ResponseEntity<Collection<UserAccount>> get() {
+        try {
+            Collection<UserAccount> userAccounts = userAccountSearch.getAll();
+            return new ResponseEntity<>(userAccounts, HttpStatus.valueOf(200));
+        } catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
