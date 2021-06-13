@@ -23,6 +23,13 @@ CREATE UNIQUE INDEX `email_UNIQUE` ON `users` (`email` ASC);
 
 CREATE UNIQUE INDEX `username_UNIQUE` ON `users` (`username` ASC);
 
+CREATE TABLE IF NOT EXISTS `role`
+(
+    `id`         INT          NOT NULL AUTO_INCREMENT,
+    `name`       VARCHAR(31)  NOT NULL,
+    PRIMARY KEY (`id`)
+);
+
 -- -----------------------------------------------------
 -- Table `confirm_token`
 -- -----------------------------------------------------
