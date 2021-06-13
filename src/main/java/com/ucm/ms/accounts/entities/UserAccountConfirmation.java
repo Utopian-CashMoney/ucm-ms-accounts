@@ -1,6 +1,7 @@
 package com.ucm.ms.accounts.entities;
 
 import com.ucm.lib.entities.User;
+import com.ucm.lib.entity.IVerificationEntity;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity(name="user_account_confirmation")
-public class UserAccountConfirmation implements Serializable {
+public class UserAccountConfirmation implements Serializable, IVerificationEntity<UserAccount> {
     private static final long serialVersionUID = 2237038858049091645L;
 
     @Id
@@ -51,6 +52,16 @@ public class UserAccountConfirmation implements Serializable {
 
     public LocalDateTime getExpires() {
         return expires;
+    }
+
+    @Override
+    public void setEntity(UserAccount entity) {
+        this.setUserAccount(entity);
+    }
+
+    @Override
+    public UserAccount getEntity() {
+        return this.getUserAccount();
     }
 
     public void setExpires(LocalDateTime expires) {

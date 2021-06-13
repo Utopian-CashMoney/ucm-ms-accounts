@@ -71,6 +71,7 @@ class UserAccountRegistrationTest {
         when(userDAO.findByUsername(user.getUsername())).thenReturn(user);
 
         when(userAccountConfirmationDAO.findFirstByCode(anyString())).thenReturn(null); //For making sure that any randomly generated confirmation code is fine.
+        when(userAccountConfirmationDAO.save(any())).thenAnswer(x -> x.getArguments()[0]);
 
         //STEP 2: Act
         RegisterUserAccountRespDTO response = userAccountRegistration.register(registerUserAccountDTO, token);

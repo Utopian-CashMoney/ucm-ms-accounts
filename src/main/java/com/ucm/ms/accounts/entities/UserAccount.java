@@ -1,6 +1,7 @@
 package com.ucm.ms.accounts.entities;
 
 import com.ucm.lib.entities.User;
+import com.ucm.lib.entity.IVerifiableEntity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -15,7 +16,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "user_account")
-public class UserAccount implements Serializable {
+public class UserAccount implements Serializable, IVerifiableEntity {
 	private static final long serialVersionUID = -7468301910750885913L;
 
 	// Data
@@ -81,7 +82,7 @@ public class UserAccount implements Serializable {
 		this.user = user;
 	}
 
-	public Boolean getActive() {
+	public Boolean isActive() {
 		return active;
 	}
 
