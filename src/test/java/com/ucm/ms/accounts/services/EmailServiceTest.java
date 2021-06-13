@@ -1,5 +1,6 @@
 package com.ucm.ms.accounts.services;
 
+import com.ucm.lib.services.EmailService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -16,12 +16,20 @@ CREATE TABLE IF NOT EXISTS `users`
     `first_name` VARCHAR(63)  NOT NULL,
     `last_name`  VARCHAR(63)  NOT NULL,
     `is_active`  BOOLEAN      NOT NULL,
+    `role`       INT          NOT NULL,
     PRIMARY KEY (`id`)
 );
 
 CREATE UNIQUE INDEX `email_UNIQUE` ON `users` (`email` ASC);
 
 CREATE UNIQUE INDEX `username_UNIQUE` ON `users` (`username` ASC);
+
+CREATE TABLE IF NOT EXISTS `role`
+(
+    `id`         INT          NOT NULL AUTO_INCREMENT,
+    `name`       VARCHAR(31)  NOT NULL,
+    PRIMARY KEY (`id`)
+);
 
 -- -----------------------------------------------------
 -- Table `confirm_token`

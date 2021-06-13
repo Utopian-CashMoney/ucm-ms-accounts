@@ -3,8 +3,11 @@ INSERT INTO `account` VALUES ( 1, 'Primary Checking', 'DEBIT', true, 100, 1 );
 INSERT INTO `account` VALUES ( 2, 'Primary Savings', 'DEBIT', false, 0, 0 );
 INSERT INTO `account` VALUES ( 3, 'Primary Credit', 'CREDIT', true, 500, 1 );
 
+INSERT INTO `role` VALUES ( 1, 'ROLE_USER' );
+INSERT INTO `role` VALUES ( 2, 'ROLE_ADMIN' );
+
 --Users
-INSERT INTO `users` VALUES ( 1, 'username', 'email@website.com', 'unhashed_password', null, 'John', 'Doe', 1);
+INSERT INTO `users` VALUES ( 1, 'username', 'email@website.com', 'unhashed_password', null, 'John', 'Doe', 1, 1);
 
 --UserAccounts
 INSERT INTO `user_account` VALUES ('CHKACCTNMBR', 1, 1, 125.32, true);
