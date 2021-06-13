@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS `users`
     `first_name` VARCHAR(63)  NOT NULL,
     `last_name`  VARCHAR(63)  NOT NULL,
     `is_active`  BOOLEAN      NOT NULL,
+    `role`       INT          NOT NULL,
     PRIMARY KEY (`id`)
 );
 
