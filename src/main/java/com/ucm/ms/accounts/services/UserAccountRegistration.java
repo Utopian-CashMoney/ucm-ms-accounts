@@ -4,6 +4,7 @@ import com.ucm.lib.config.util.JwtUtil;
 import com.ucm.lib.dao.UserDAO;
 import com.ucm.lib.entities.User;
 import com.ucm.lib.services.EmailService;
+import com.ucm.lib.services.VerificationService;
 import com.ucm.ms.accounts.dao.AccountDAO;
 import com.ucm.ms.accounts.dao.UserAccountConfirmationDAO;
 import com.ucm.ms.accounts.dao.UserAccountDAO;
@@ -39,19 +40,21 @@ public class UserAccountRegistration {
     private final JwtUtil jwtUtil;
     private final UserAccountConfirmationDAO userAccountConfirmationDAO;
     private final EmailService emailService;
+    private final VerificationService<UserAccount, UserAccountConfirmation, UserAccountDAO, UserAccountConfirmationDAO> verificationService;
 
     private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
 
     @Autowired
     public UserAccountRegistration(UserAccountDAO userAccountDAO, UserDAO userDAO, AccountDAO accountDAO,
                                    JwtUtil jwtUtil, UserAccountConfirmationDAO userAccountConfirmationDAO,
-                                   EmailService emailService) {
+                                   EmailService emailService, VerificationService<UserAccount, UserAccountConfirmation, UserAccountDAO, UserAccountConfirmationDAO> verificationService) {
         this.userAccountDAO = userAccountDAO;
         this.userDAO = userDAO;
         this.accountDAO = accountDAO;
         this.jwtUtil = jwtUtil;
         this.userAccountConfirmationDAO = userAccountConfirmationDAO;
         this.emailService = emailService;
+        this.verificationService = verificationService;
     }
 
     public RegisterUserAccountRespDTO register(RegisterUserAccountDTO registerUserAccountDTO, String token) {
@@ -74,14 +77,7 @@ public class UserAccountRegistration {
 
         UserAccountConfirmation userAccountConfirmation = generateConfirmation(userAccount);
 
-        try {
-            Context context = new Context();
-            context.setVariable("expiration", userAccountConfirmation.getExpires().format(DATETIME_FORMATTER));
-            context.setVariable("confirmation_code", userAccountConfirmation.getCode());
-            emailService.sendEmail(user.getEmail(), context,"html/confirm_account","Account Registration Verification Required");
-        } catch (MessagingException e) {
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Failed to send confirmation email.", e);
-        }
+        verificationService.sendVerificationEmail(userAccountConfirmation, userAccount.getUser().getEmail(), "html/confirm_account");
 
         RegisterUserAccountRespDTO registerUserAccountRespDTO = new RegisterUserAccountRespDTO();
         registerUserAccountRespDTO.setAccountNumber(userAccount.getAccountNumber());
@@ -96,23 +92,7 @@ public class UserAccountRegistration {
      * @return True on success, false if expired.
      */
     public Boolean confirm(String confirmationToken) {
-        UserAccountConfirmation userAccountConfirmation = userAccountConfirmationDAO.findFirstByCode(confirmationToken);
-        if(userAccountConfirmation == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No confirmation found with that token.");
-        }
-        if (userAccountConfirmation.getExpires().isBefore(LocalDateTime.now())) {
-            userAccountConfirmationDAO.delete(userAccountConfirmation);
-            generateConfirmation(userAccountDAO.getOne(userAccountConfirmation.getUserAccountId()));
-            return false;
-        }
-        else {
-            UserAccount userAccount = userAccountConfirmation.getUserAccount();
-            userAccount.setActive(true);
-            userAccountDAO.save(userAccount);
-            userAccountConfirmationDAO.delete(userAccountConfirmation);
-            return true;
-        }
-
+        return verificationService.confirm(confirmationToken);
     }
 
     /**
@@ -122,14 +102,7 @@ public class UserAccountRegistration {
      */
     protected UserAccountConfirmation generateConfirmation(UserAccount userAccount) {
         UserAccountConfirmation userAccountConfirmation = new UserAccountConfirmation();
-        userAccountConfirmation.setUserAccount(userAccount);
-        userAccountConfirmation.setExpires(LocalDateTime.now().plusDays(1));
-        String s;
-        do {
-            s = UUID.randomUUID().toString();
-            userAccountConfirmation.setCode(s);
-        } while(userAccountConfirmationDAO.findFirstByCode(s) != null);
-        return userAccountConfirmationDAO.save(userAccountConfirmation);
+        return verificationService.generateConfirmation(userAccount, userAccountConfirmation);
     }
 
     protected String randomAccountNumber() {

@@ -133,6 +133,7 @@ class UserAccountRegistrationTest {
         UserAccount userAccount = new UserAccount();
         userAccount.setAccountNumber("Something");
         when(userAccountConfirmationDAO.findFirstByCode(anyString())).thenReturn(null);
+        when(userAccountConfirmationDAO.save(any())).thenAnswer(x -> x.getArguments()[0]);
         //STEP 2: Act
         UserAccountConfirmation result = userAccountRegistration.generateConfirmation(userAccount);
         //STEP 3: Assert
