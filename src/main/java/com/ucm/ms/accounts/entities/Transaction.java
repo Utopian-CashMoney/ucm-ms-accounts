@@ -1,6 +1,7 @@
 package com.ucm.ms.accounts.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -37,6 +38,7 @@ public class Transaction implements Serializable {
     //Relationships
     @ManyToOne
     @JoinColumn(name = "account_number", referencedColumnName = "account_number", nullable = false)
+    @JsonManagedReference("TransactionHasUserAccount")
     private UserAccount userAccount;
 
     public Integer getId() {
