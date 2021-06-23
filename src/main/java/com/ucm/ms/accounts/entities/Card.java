@@ -1,6 +1,7 @@
 package com.ucm.ms.accounts.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -38,6 +39,7 @@ public class Card implements Serializable{
 	// Relationships
 	@ManyToOne
 	@JoinColumn(name = "account_number", referencedColumnName = "account_Number", nullable = false)
+	@JsonManagedReference("CardHasUserAccount")
 	private UserAccount userAccount;
 	
 	// Methods
