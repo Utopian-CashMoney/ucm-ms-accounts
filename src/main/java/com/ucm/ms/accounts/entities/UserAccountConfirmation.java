@@ -1,5 +1,6 @@
 package com.ucm.ms.accounts.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ucm.lib.entities.User;
 import com.ucm.lib.entity.IVerificationEntity;
 
@@ -24,6 +25,7 @@ public class UserAccountConfirmation implements Serializable, IVerificationEntit
     @OneToOne
     @JoinColumn(name="user_account_id", referencedColumnName = "account_number")
     @MapsId
+    @JsonManagedReference("UserAccountConfirmationHasUserAccount")
     private UserAccount userAccount;
 
     public String getUserAccountId() {

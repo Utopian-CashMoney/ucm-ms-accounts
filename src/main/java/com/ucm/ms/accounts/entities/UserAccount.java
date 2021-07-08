@@ -1,5 +1,6 @@
 package com.ucm.ms.accounts.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ucm.lib.entities.User;
 import com.ucm.lib.entity.IVerifiableEntity;
 
@@ -33,10 +34,12 @@ public class UserAccount implements Serializable, IVerifiableEntity {
 	// Relationships
 	@ManyToOne(targetEntity = User.class)
 	@JoinColumn(name="users_id", referencedColumnName = "id", nullable = false)
+	@JsonManagedReference("UserAccountHasUser")
 	private User user;
 
 	@ManyToOne
 	@JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
+	@JsonManagedReference("UserAccountHasAccount")
 	private Account account;
 
 	// Methods

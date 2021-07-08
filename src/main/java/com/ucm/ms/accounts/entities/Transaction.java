@@ -1,16 +1,18 @@
 package com.ucm.ms.accounts.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "transaction")
 public class Transaction implements Serializable {
-    private static final long serialVersionUID = -6122515679250377162L;
+    private static final long serialVersionUID = 6126350707693993458L;
 
     //Data
     @Id
@@ -24,32 +26,20 @@ public class Transaction implements Serializable {
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS][.SS][.S]")
     private LocalDateTime timestamp;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "message", nullable = false)
+    private String message;
 
-    @Column(name = "is_processed", nullable = false)
-    private Boolean processed;
+    @Column(name = "status", nullable = false)
+    private String status;
 
-    @Column(name = "is_cancelled", nullable = false)
-    private Boolean cancelled;
+    @Column(name = "destination", nullable = false)
+    private String destination;
 
     //Relationships
     @ManyToOne
     @JoinColumn(name = "account_number", referencedColumnName = "account_number", nullable = false)
+    @JsonManagedReference("TransactionHasUserAccount")
     private UserAccount userAccount;
-
-    //Methods
-    public Transaction() {
-    }
-
-    public Transaction(BigDecimal amount, LocalDateTime timestamp, String name, Boolean processed, Boolean cancelled, UserAccount userAccount) {
-        this.amount = amount;
-        this.timestamp = timestamp;
-        this.name = name;
-        this.processed = processed;
-        this.cancelled = cancelled;
-        this.userAccount = userAccount;
-    }
 
     public Integer getId() {
         return id;
@@ -75,28 +65,28 @@ public class Transaction implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public String getName() {
-        return name;
+    public String getMessage() {
+        return message;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public Boolean getProcessed() {
-        return processed;
+    public String getStatus() {
+        return status;
     }
 
-    public void setProcessed(Boolean processed) {
-        this.processed = processed;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public Boolean getCancelled() {
-        return cancelled;
+    public String getDestination() {
+        return destination;
     }
 
-    public void setCancelled(Boolean cancelled) {
-        this.cancelled = cancelled;
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 
     public UserAccount getUserAccount() {
@@ -105,5 +95,18 @@ public class Transaction implements Serializable {
 
     public void setUserAccount(UserAccount userAccount) {
         this.userAccount = userAccount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transaction that = (Transaction) o;
+        return Objects.equals(id, that.id) && Objects.equals(amount, that.amount) && Objects.equals(timestamp, that.timestamp) && Objects.equals(message, that.message) && Objects.equals(status, that.status) && Objects.equals(destination, that.destination) && Objects.equals(userAccount, that.userAccount);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, amount, timestamp, message, status, destination, userAccount);
     }
 }
