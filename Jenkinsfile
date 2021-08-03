@@ -9,11 +9,12 @@ pipeline {
     environment {
 	    COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
 	    
-	    registry = "202447729588.dkr.ecr.us-east-2.amazonaws.com/accounts_ms"
+	    registry = "202447729588.dkr.ecr.us-east-2.amazonaws.com/accounts-ms"
 	 
 	   // AWS_ID = credentials('AWS_ID')
 	    
 	    IMG_NAME = "accountsms"
+	    scannerHome = tool 'SonarqubeScanner'
     }
     
     stages { 
@@ -31,6 +32,19 @@ pipeline {
             }
         }
 
+	stage ('SonarQube Analysis') {
+            
+	     tools {
+			jdk 'jdk11'
+		}
+		
+             steps {
+                      withSonarQubeEnv('Sonarqube') {
+                          sh 'mvn sonar:sonar'
+                      }
+                  }
+        }   
+	    
         stage ('Build') {
             
             steps {
