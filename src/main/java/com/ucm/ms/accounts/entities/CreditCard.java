@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,21 +19,20 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "card")
-public class Card implements Serializable{
+@Table(name = "credit_card")
+public class CreditCard implements Serializable{
 	private static final long serialVersionUID = -8717102373082913856L;
 
 	// Data
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-
 	@Column(name = "card_number", nullable = false)
 	private String cardNumber;
 
-	@Column(name = "exp", nullable = false)
-	private LocalDate exp;
-
+	@Column(name = "expiry_date", nullable = false)
+	private LocalDate expiryDate;
+	
+	@Column(name = "interest_rate", nullable = false)
+	private BigDecimal interestRate;
+	
 	@Column(name = "cvv", nullable = false)
 	private String cvv;
 
@@ -43,22 +43,15 @@ public class Card implements Serializable{
 	private UserAccount userAccount;
 	
 	// Methods
-	public Card() {
+	public CreditCard() {
 	}
 
-	public Card(String cardNumber, LocalDate exp, String cvv, UserAccount userAccount) {
+	public CreditCard(String cardNumber, LocalDate expiryDate, BigDecimal interestRate, String cvv, UserAccount userAccount) {
 		this.cardNumber = cardNumber;
-		this.exp = exp;
+		this.expiryDate = expiryDate;
+		this.interestRate = interestRate;
 		this.cvv = cvv;
 		this.userAccount = userAccount;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getCardNumber() {
@@ -69,12 +62,20 @@ public class Card implements Serializable{
 		this.cardNumber = cardNumber;
 	}
 
-	public LocalDate getExp() {
-		return exp;
+	public LocalDate getExpiryDate() {
+		return expiryDate;
 	}
 
-	public void setExp(LocalDate exp) {
-		this.exp = exp;
+	public void setExp(LocalDate expiryDate) {
+		this.expiryDate = expiryDate;
+	}
+
+	public BigDecimal getInterestRate() {
+		return interestRate;
+	}
+
+	public void setInterestRate(BigDecimal interestRate) {
+		this.interestRate = interestRate;
 	}
 
 	public String getCvv() {
@@ -87,7 +88,7 @@ public class Card implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, cardNumber, exp, cvv);
+		return Objects.hash(cardNumber, expiryDate, interestRate, cvv);
 	}
 
 	@Override
@@ -96,10 +97,8 @@ public class Card implements Serializable{
 			return true;
 		if (obj == null || getClass() != obj.getClass())
 			return false;
-		Card card = (Card) obj;
-		return Objects.equals(id, card.id)
-				&& Objects.equals(cardNumber, card.cardNumber) && Objects.equals(exp, card.exp)
-				&& Objects.equals(cvv, card.cvv);
+		CreditCard card = (CreditCard) obj;
+		return Objects.equals(cardNumber, card.cardNumber) && Objects.equals(expiryDate, card.expiryDate) &&
+				Objects.equals(interestRate, card.interestRate)&& Objects.equals(cvv, card.cvv);
 	}
-
 }

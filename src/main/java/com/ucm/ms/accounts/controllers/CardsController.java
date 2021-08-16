@@ -1,6 +1,6 @@
 package com.ucm.ms.accounts.controllers;
 
-import com.ucm.ms.accounts.entities.Card;
+import com.ucm.ms.accounts.entities.CreditCard;
 import com.ucm.ms.accounts.services.CardSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,9 +29,9 @@ public class CardsController {
 	 * @return All cards
 	 */
 	@GetMapping
-	public ResponseEntity<Collection<Card>> get() {
+	public ResponseEntity<Collection<CreditCard>> get() {
 		try {
-			Collection<Card> cards = cardSearch.getAll();
+			Collection<CreditCard> cards = cardSearch.getAll();
 			return new ResponseEntity<>(cards, HttpStatus.valueOf(200));
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

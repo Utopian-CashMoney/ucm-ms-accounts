@@ -1,7 +1,7 @@
 package com.ucm.ms.accounts.services;
 
 import com.ucm.ms.accounts.dao.CardDAO;
-import com.ucm.ms.accounts.entities.Card;
+import com.ucm.ms.accounts.entities.CreditCard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,7 +32,7 @@ public class CardSearch {
 	 * 
 	 * @return Collection of all cards
 	 */
-	public Collection<Card> getAll() {
+	public Collection<CreditCard> getAll() {
 		return cardDAO.findAll();
 	}
 }
