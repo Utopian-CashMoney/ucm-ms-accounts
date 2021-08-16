@@ -1,6 +1,5 @@
 package com.ucm.ms.accounts.dao;
 
-import com.ucm.ms.accounts.entities.DebitCard;
 import com.ucm.ms.accounts.entities.Transaction;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

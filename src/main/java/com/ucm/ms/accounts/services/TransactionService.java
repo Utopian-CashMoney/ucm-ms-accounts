@@ -27,10 +27,11 @@ public class TransactionService {
     protected Page<TransactionDTO> convertPage(Page<Transaction> source) {
         return source.map(transaction -> new TransactionDTO(
                 transaction.getUserAccount().getAccountNumber(),
-                transaction.getMessage(), transaction.getAmount(),
-                transaction.getDestination(),
+                transaction.getAmount(),
+                transaction.getName(),
                 transaction.getTimestamp(),
-                transaction.getStatus()
+                transaction.getIsProcessed(),
+                transaction.getIsCancelled()
                 )
         );
     }
