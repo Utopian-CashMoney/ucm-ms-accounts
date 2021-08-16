@@ -19,8 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "credit_card")
-public class CreditCard implements Serializable{
+@Table(name = "debit_card")
+public class DebitCard implements Serializable{
 	private static final long serialVersionUID = -8717102373082913856L;
 
 	// Data
@@ -29,9 +29,6 @@ public class CreditCard implements Serializable{
 
 	@Column(name = "expiration_date", nullable = false)
 	private LocalDate expirationDate;
-	
-	@Column(name = "interest_rate", nullable = false)
-	private BigDecimal interestRate;
 	
 	@Column(name = "cvv", nullable = false)
 	private String cvv;
@@ -43,13 +40,12 @@ public class CreditCard implements Serializable{
 	private UserAccount userAccount;
 	
 	// Methods
-	public CreditCard() {
+	public DebitCard() {
 	}
 
-	public CreditCard(String cardNumber, LocalDate expirationDate, BigDecimal interestRate, String cvv, UserAccount userAccount) {
+	public DebitCard(String cardNumber, LocalDate expirationDate, BigDecimal interestRate, String cvv, UserAccount userAccount) {
 		this.cardNumber = cardNumber;
 		this.expirationDate = expirationDate;
-		this.interestRate = interestRate;
 		this.cvv = cvv;
 		this.userAccount = userAccount;
 	}
@@ -70,14 +66,6 @@ public class CreditCard implements Serializable{
 		this.expirationDate = expirationDate;
 	}
 
-	public BigDecimal getInterestRate() {
-		return interestRate;
-	}
-
-	public void setInterestRate(BigDecimal interestRate) {
-		this.interestRate = interestRate;
-	}
-
 	public String getCvv() {
 		return cvv;
 	}
@@ -88,7 +76,7 @@ public class CreditCard implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cardNumber, expirationDate, interestRate, cvv);
+		return Objects.hash(cardNumber, expirationDate, cvv);
 	}
 
 	@Override
@@ -97,8 +85,8 @@ public class CreditCard implements Serializable{
 			return true;
 		if (obj == null || getClass() != obj.getClass())
 			return false;
-		CreditCard card = (CreditCard) obj;
+		DebitCard card = (DebitCard) obj;
 		return Objects.equals(cardNumber, card.cardNumber) && Objects.equals(expirationDate, card.expirationDate) &&
-				Objects.equals(interestRate, card.interestRate)&& Objects.equals(cvv, card.cvv);
+				 Objects.equals(cvv, card.cvv);
 	}
 }
