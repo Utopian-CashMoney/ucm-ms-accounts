@@ -29,11 +29,8 @@ public class Transaction implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "is_processed", nullable = false)
-    private Boolean isProcessed;
-    
-    @Column(name = "is_cancelled", nullable = false)
-    private Boolean isCancelled;
+    @Column(name = "status", nullable = false)
+    private String status;
     
     //Relationships
     @ManyToOne
@@ -65,20 +62,12 @@ public class Transaction implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public Boolean getIsProcessed() {
-		return isProcessed;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setIsProcessed(Boolean isProcessed) {
-		this.isProcessed = isProcessed;
-	}
-
-	public Boolean getIsCancelled() {
-		return isCancelled;
-	}
-
-	public void setIsCancelled(Boolean isCancelled) {
-		this.isCancelled = isCancelled;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String getName() {
@@ -102,11 +91,11 @@ public class Transaction implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
-        return Objects.equals(id, that.id) && Objects.equals(amount, that.amount) && Objects.equals(timestamp, that.timestamp) && Objects.equals(isProcessed, that.isProcessed) && Objects.equals(isCancelled, that.isCancelled) && Objects.equals(name, that.name) && Objects.equals(userAccount, that.userAccount);
+        return Objects.equals(id, that.id) && Objects.equals(amount, that.amount) && Objects.equals(timestamp, that.timestamp) && Objects.equals(status, that.status) && Objects.equals(name, that.name) && Objects.equals(userAccount, that.userAccount);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, amount, timestamp, isProcessed, isCancelled, name, userAccount);
+        return Objects.hash(id, amount, timestamp, status, name, userAccount);
     }
 }

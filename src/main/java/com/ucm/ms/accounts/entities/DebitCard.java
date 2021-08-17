@@ -24,6 +24,7 @@ public class DebitCard implements Serializable{
 	private static final long serialVersionUID = -8717102373082913856L;
 
 	// Data
+	@Id
 	@Column(name = "card_number", nullable = false)
 	private String cardNumber;
 
@@ -31,7 +32,7 @@ public class DebitCard implements Serializable{
 	private LocalDate expirationDate;
 	
 	@Column(name = "cvv", nullable = false)
-	private String cvv;
+	private Integer cvv;
 
 	// Relationships
 	@ManyToOne
@@ -43,7 +44,7 @@ public class DebitCard implements Serializable{
 	public DebitCard() {
 	}
 
-	public DebitCard(String cardNumber, LocalDate expirationDate, BigDecimal interestRate, String cvv, UserAccount userAccount) {
+	public DebitCard(String cardNumber, LocalDate expirationDate, BigDecimal interestRate, Integer cvv, UserAccount userAccount) {
 		this.cardNumber = cardNumber;
 		this.expirationDate = expirationDate;
 		this.cvv = cvv;
@@ -66,11 +67,11 @@ public class DebitCard implements Serializable{
 		this.expirationDate = expirationDate;
 	}
 
-	public String getCvv() {
+	public Integer getCvv() {
 		return cvv;
 	}
 
-	public void setCvv(String cvv) {
+	public void setCvv(Integer cvv) {
 		this.cvv = cvv;
 	}
 

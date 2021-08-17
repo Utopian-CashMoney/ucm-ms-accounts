@@ -21,9 +21,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "credit_card")
 public class CreditCard implements Serializable{
-	private static final long serialVersionUID = -8717102373082913856L;
+	private static final long serialVersionUID = -3347095771105124076L;
 
 	// Data
+	@Id
 	@Column(name = "card_number", nullable = false)
 	private String cardNumber;
 
@@ -34,7 +35,7 @@ public class CreditCard implements Serializable{
 	private BigDecimal interestRate;
 	
 	@Column(name = "cvv", nullable = false)
-	private String cvv;
+	private Integer cvv;
 
 	// Relationships
 	@ManyToOne
@@ -46,7 +47,7 @@ public class CreditCard implements Serializable{
 	public CreditCard() {
 	}
 
-	public CreditCard(String cardNumber, LocalDate expirationDate, BigDecimal interestRate, String cvv, UserAccount userAccount) {
+	public CreditCard(String cardNumber, LocalDate expirationDate, BigDecimal interestRate, Integer cvv, UserAccount userAccount) {
 		this.cardNumber = cardNumber;
 		this.expirationDate = expirationDate;
 		this.interestRate = interestRate;
@@ -78,11 +79,11 @@ public class CreditCard implements Serializable{
 		this.interestRate = interestRate;
 	}
 
-	public String getCvv() {
+	public Integer getCvv() {
 		return cvv;
 	}
 
-	public void setCvv(String cvv) {
+	public void setCvv(Integer cvv) {
 		this.cvv = cvv;
 	}
 

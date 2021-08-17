@@ -17,16 +17,14 @@ public class TransactionDTO implements Serializable {
     private BigDecimal amount;
     private String name;
     private LocalDateTime timestamp;
-    private Boolean isProcessed;
-    private Boolean isCancelled;
+    private String status;
 
-    public TransactionDTO(String accountNumber, BigDecimal amount, String name, LocalDateTime timestamp, Boolean isProcessed, Boolean isCancelled) {
+    public TransactionDTO(String accountNumber, BigDecimal amount, String name, LocalDateTime timestamp, String status) {
         this.accountNumber = accountNumber;
         this.amount = amount;
         this.name = name;
         this.timestamp = timestamp;
-        this.isProcessed = isProcessed;
-        this.isCancelled = isCancelled;
+        this.status = status;
     }
 
     public String getAccountNumber() {
@@ -45,11 +43,11 @@ public class TransactionDTO implements Serializable {
         this.amount = amount;
     }
 
-    public String getDestination() {
+    public String getName() {
         return name;
     }
 
-    public void setDestination(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -60,33 +58,25 @@ public class TransactionDTO implements Serializable {
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
-    
-    public Boolean getIsProcessed() {
-		return isProcessed;
+
+    public String getStatus() {
+		return status;
 	}
 
-	public void setIsProcessed(Boolean isProcessed) {
-		this.isProcessed = isProcessed;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
-	public Boolean getIsCancelled() {
-		return isCancelled;
-	}
-
-	public void setIsCancelled(Boolean isCancelled) {
-		this.isCancelled = isCancelled;
-	}
-
-    @Override
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TransactionDTO that = (TransactionDTO) o;
-        return Objects.equals(accountNumber, that.accountNumber) && Objects.equals(amount, that.amount) && Objects.equals(name, that.name) && Objects.equals(timestamp, that.timestamp) && Objects.equals(isProcessed, that.isProcessed) && Objects.equals(isCancelled, that.isCancelled);
+        return Objects.equals(accountNumber, that.accountNumber) && Objects.equals(amount, that.amount) && Objects.equals(name, that.name) && Objects.equals(timestamp, that.timestamp) && Objects.equals(status, that.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(accountNumber, amount, name, timestamp, isProcessed, isCancelled);
+        return Objects.hash(accountNumber, amount, name, timestamp, status);
     }
 }

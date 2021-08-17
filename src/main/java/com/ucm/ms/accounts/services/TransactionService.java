@@ -30,8 +30,7 @@ public class TransactionService {
                 transaction.getAmount(),
                 transaction.getName(),
                 transaction.getTimestamp(),
-                transaction.getIsProcessed(),
-                transaction.getIsCancelled()
+                transaction.getStatus()
                 )
         );
     }
