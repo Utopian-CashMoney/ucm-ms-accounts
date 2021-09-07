@@ -1,7 +1,7 @@
 package com.ucm.ms.accounts.services;
 
-import com.ucm.ms.accounts.dao.CardDAO;
-import com.ucm.ms.accounts.entities.Card;
+import com.ucm.ms.accounts.dao.CreditCardDAO;
+import com.ucm.ms.accounts.entities.CreditCard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,16 +15,16 @@ import java.util.Collection;
  */
 @Service
 @Transactional
-public class CardSearch {
-    private final CardDAO cardDAO;
+public class CreditCardSearch {
+    private final CreditCardDAO creditCardDAO;
 
     /**
      * Uses constructor-based dependency injection.
-     * @param cardDAO The Card's DAO
+     * @param creditCardDAO The Card's DAO
      */
     @Autowired
-    public CardSearch(CardDAO cardDAO) {
-        this.cardDAO = cardDAO;
+    public CreditCardSearch(CreditCardDAO creditCardDAO) {
+        this.creditCardDAO = creditCardDAO;
     }
     
     /**
@@ -32,7 +32,7 @@ public class CardSearch {
 	 * 
 	 * @return Collection of all cards
 	 */
-	public Collection<Card> getAll() {
-		return cardDAO.findAll();
+	public Collection<CreditCard> getAll() {
+		return creditCardDAO.findAll();
 	}
 }

@@ -3,12 +3,12 @@ package com.ucm.ms.accounts.services;
 import com.ucm.lib.config.util.JwtUtil;
 import com.ucm.lib.dao.UserDAO;
 import com.ucm.lib.entities.User;
-import com.ucm.ms.accounts.dao.AccountDAO;
+import com.ucm.ms.accounts.dao.AccountTypeDAO;
 import com.ucm.ms.accounts.dao.UserAccountConfirmationDAO;
 import com.ucm.ms.accounts.dao.UserAccountDAO;
 import com.ucm.ms.accounts.dto.RegisterUserAccountDTO;
 import com.ucm.ms.accounts.dto.RegisterUserAccountRespDTO;
-import com.ucm.ms.accounts.entities.Account;
+import com.ucm.ms.accounts.entities.AccountType;
 import com.ucm.ms.accounts.entities.UserAccount;
 import com.ucm.ms.accounts.entities.UserAccountConfirmation;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ class UserAccountRegistrationTest {
     @MockBean
     JwtUtil jwtUtil;
     @MockBean
-    AccountDAO accountDAO;
+    AccountTypeDAO accountDAO;
     @MockBean
     UserDAO userDAO;
     @MockBean
@@ -56,7 +56,7 @@ class UserAccountRegistrationTest {
         RegisterUserAccountDTO registerUserAccountDTO = new RegisterUserAccountDTO();
         registerUserAccountDTO.setAccountID(1); //We want to register for account 1 (present in data.sql)
         //Input from the database. Only populate what we care about.
-        Account account = new Account();
+        AccountType account = new AccountType();
         account.setId(1);
         account.setName("NAME");
         account.setType("DEBIT");

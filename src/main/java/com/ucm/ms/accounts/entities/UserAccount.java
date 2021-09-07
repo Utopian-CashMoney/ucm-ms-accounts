@@ -19,7 +19,6 @@ import javax.persistence.Table;
 @Table(name = "user_account")
 public class UserAccount implements Serializable, IVerifiableEntity {
 	private static final long serialVersionUID = -7468301910750885913L;
-
 	// Data
 	@Id
 	@Column(name = "account_number", nullable = false)
@@ -30,26 +29,26 @@ public class UserAccount implements Serializable, IVerifiableEntity {
 
 	@Column(name="active", nullable = false)
 	private Boolean active;
-
+	
 	// Relationships
 	@ManyToOne(targetEntity = User.class)
-	@JoinColumn(name="users_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name="user_id", referencedColumnName = "id", nullable = false)
 	@JsonManagedReference("UserAccountHasUser")
 	private User user;
 
 	@ManyToOne
 	@JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
 	@JsonManagedReference("UserAccountHasAccount")
-	private Account account;
+	private AccountType accountType;
 
 	// Methods
 	public UserAccount() {
 	}
 
-	public UserAccount(String accountNumber, BigDecimal balance, Account account, User user) {
+	public UserAccount(String accountNumber, BigDecimal balance, AccountType account, User user) {
 		this.accountNumber = accountNumber;
 		this.balance = balance;
-		this.account = account;
+		this.accountType = account;
 		this.user = user;
 	}
 
@@ -69,12 +68,12 @@ public class UserAccount implements Serializable, IVerifiableEntity {
 		this.balance = balance;
 	}
 
-	public Account getAccount() {
-		return account;
+	public AccountType getAccountType() {
+		return accountType;
 	}
 
-	public void setAccount(Account account) {
-		this.account = account;
+	public void setAccountType(AccountType account) {
+		this.accountType = account;
 	}
 
 	public User getUser() {
@@ -98,11 +97,11 @@ public class UserAccount implements Serializable, IVerifiableEntity {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		UserAccount that = (UserAccount) o;
-		return Objects.equals(accountNumber, that.accountNumber) && Objects.equals(balance, that.balance) && Objects.equals(active, that.active) && Objects.equals(user, that.user) && Objects.equals(account, that.account);
+		return Objects.equals(accountNumber, that.accountNumber) && Objects.equals(balance, that.balance) && Objects.equals(active, that.active) && Objects.equals(user, that.user) && Objects.equals(accountType, that.accountType);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(accountNumber, balance, active, user, account);
+		return Objects.hash(accountNumber, balance, active, user, accountType);
 	}
 }

@@ -1,7 +1,7 @@
 package com.ucm.ms.accounts.controllers;
 
-import com.ucm.ms.accounts.entities.Card;
-import com.ucm.ms.accounts.services.CardSearch;
+import com.ucm.ms.accounts.entities.DebitCard;
+import com.ucm.ms.accounts.services.DebitCardSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,24 +14,24 @@ import java.util.Collection;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/cards")
-public class CardsController {
-	private final CardSearch cardSearch;
+@RequestMapping("/debitcards")
+public class DebitCardController {
+	private final DebitCardSearch debitCardSearch;
 
 	@Autowired
-	public CardsController(CardSearch cardSearch) {
-		this.cardSearch = cardSearch;
+	public DebitCardController(DebitCardSearch debitCardSearch) {
+		this.debitCardSearch = debitCardSearch;
 	}
 
 	/**
-	 * GET /api/cards - Return all cards
+	 * GET /api/debitcards - Return all debit cards
 	 * 
-	 * @return All cards
+	 * @return All debit cards
 	 */
 	@GetMapping
-	public ResponseEntity<Collection<Card>> get() {
+	public ResponseEntity<Collection<DebitCard>> get() {
 		try {
-			Collection<Card> cards = cardSearch.getAll();
+			Collection<DebitCard> cards = debitCardSearch.getAll();
 			return new ResponseEntity<>(cards, HttpStatus.valueOf(200));
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

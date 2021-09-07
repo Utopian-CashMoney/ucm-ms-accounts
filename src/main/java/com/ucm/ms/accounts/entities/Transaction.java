@@ -26,15 +26,12 @@ public class Transaction implements Serializable {
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS][.SS][.S]")
     private LocalDateTime timestamp;
 
-    @Column(name = "message", nullable = false)
-    private String message;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Column(name = "status", nullable = false)
     private String status;
-
-    @Column(name = "destination", nullable = false)
-    private String destination;
-
+    
     //Relationships
     @ManyToOne
     @JoinColumn(name = "account_number", referencedColumnName = "account_number", nullable = false)
@@ -65,28 +62,20 @@ public class Transaction implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public String getMessage() {
-        return message;
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getName() {
+        return name;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public UserAccount getUserAccount() {
@@ -102,11 +91,11 @@ public class Transaction implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
-        return Objects.equals(id, that.id) && Objects.equals(amount, that.amount) && Objects.equals(timestamp, that.timestamp) && Objects.equals(message, that.message) && Objects.equals(status, that.status) && Objects.equals(destination, that.destination) && Objects.equals(userAccount, that.userAccount);
+        return Objects.equals(id, that.id) && Objects.equals(amount, that.amount) && Objects.equals(timestamp, that.timestamp) && Objects.equals(status, that.status) && Objects.equals(name, that.name) && Objects.equals(userAccount, that.userAccount);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, amount, timestamp, message, status, destination, userAccount);
+        return Objects.hash(id, amount, timestamp, status, name, userAccount);
     }
 }

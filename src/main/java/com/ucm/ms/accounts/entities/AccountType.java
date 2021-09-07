@@ -9,8 +9,8 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "account")
-public class Account implements Serializable {
+@Table(name = "account_type")
+public class AccountType implements Serializable {
     private static final long serialVersionUID = -6183304311165530152L;
 
     //Data
@@ -21,7 +21,7 @@ public class Account implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    //ENUM: ('CREDIT', 'DEBIT')
+    //ENUM: ('CREDIT', 'DEBIT', 'LOAN')
     @Column(name = "type", nullable = false)
     private String type;
 
@@ -33,6 +33,12 @@ public class Account implements Serializable {
 
     @Column(name = "allow_cards", nullable = false)
     private Boolean allowCards;
+    
+    @Column(name = "apr")
+    private BigDecimal apr;
+    
+    @Column(name = "perks")
+    private String perks;
 
     //Relationships
     //None
@@ -42,44 +48,51 @@ public class Account implements Serializable {
      * No-arg constructor for Account.
      * @author Joshua Podhola
      */
-    public Account() {
+    public AccountType() {
     }
 
 
     /**
-     * Value constructor for Account
-     * @author Joshua Podhola
+     * Constructor for Account
+     * @author Josten Asercion
      * @param name Account name
-     * @param type Account type: DEBIT or CREDIT
+     * @param type Account type: DEBIT, CREDIT, or LOAN
      * @param allowCredit Is the balance allowed to go negative? (Overdraft)
      * @param creditLimit How negative may the balance go?
      * @param allowCards Is this account allowed to have cards?
+     * @param apr The annual percentage rate (if applicable)
+     * @param perks Text description of the benefits of the account type
      */
-    public Account(String name, String type, Boolean allowCredit, BigDecimal creditLimit, Boolean allowCards) {
+    public AccountType(String name, String type, Boolean allowCredit, BigDecimal creditLimit, Boolean allowCards, BigDecimal apr, String perks) {
         this.name = name;
         this.type = type;
         this.allowCredit = allowCredit;
         this.creditLimit = creditLimit;
         this.allowCards = allowCards;
+        this.apr = apr;
+        this.perks = perks;
     }
 
     /**
-     * Value constructor for Account (using Float for creditLimit)
-     * @author Joshua Podhola
+     * Value constructor for Account (using Float for creditLimit and apr)
+     * @author Joshua Podhola, Josten Asercion
      * @param name Account name
      * @param type Account type: DEBIT or CREDIT
      * @param allowCredit Is the balance allowed to go negative? (Overdraft)
      * @param creditLimit How negative may the balance go? (as Float)
      * @param allowCards Is this account allowed to have cards?
+     * @param apr The annual percentage rate (if applicable)
+     * @param perks Text description of the benefits of the account type
      */
-    public Account(String name, String type, Boolean allowCredit, float creditLimit, Boolean allowCards) {
+    public AccountType(String name, String type, Boolean allowCredit, float creditLimit, Boolean allowCards, float apr, String perks) {
         this.name = name;
         this.type = type;
         this.allowCredit = allowCredit;
         this.creditLimit = new BigDecimal(creditLimit);
         this.allowCards = allowCards;
+        this.apr = new BigDecimal(apr);
+        this.perks = perks;
     }
-
 
     public Integer getId() {
         return id;
@@ -129,16 +142,33 @@ public class Account implements Serializable {
         this.allowCards = allowCards;
     }
 
-    @Override
+    public BigDecimal getApr() {
+		return apr;
+	}
+
+	public void setApr(BigDecimal apr) {
+		this.apr = apr;
+	}
+
+	public String getPerks() {
+		return perks;
+	}
+
+	public void setPerks(String perks) {
+		this.perks = perks;
+	}
+
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Account account = (Account) o;
-        return Objects.equals(id, account.id) && Objects.equals(name, account.name) && Objects.equals(type, account.type) && Objects.equals(allowCredit, account.allowCredit) && Objects.equals(creditLimit, account.creditLimit) && Objects.equals(allowCards, account.allowCards);
+        AccountType account = (AccountType) o;
+        return Objects.equals(id, account.id) && Objects.equals(name, account.name) && Objects.equals(type, account.type) && Objects.equals(allowCredit, account.allowCredit) && Objects.equals(creditLimit, account.creditLimit) && Objects.equals(allowCards, account.allowCards) && Objects.equals(apr, account.apr) && Objects.equals(perks, account.perks);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, type, allowCredit, creditLimit, allowCards);
+        return Objects.hash(id, name, type, allowCredit, creditLimit, allowCards, apr, perks);
     }
 }

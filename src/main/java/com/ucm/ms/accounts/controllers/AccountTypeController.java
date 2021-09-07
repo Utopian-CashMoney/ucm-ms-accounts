@@ -1,6 +1,6 @@
 package com.ucm.ms.accounts.controllers;
 
-import com.ucm.ms.accounts.entities.Account;
+import com.ucm.ms.accounts.entities.AccountType;
 import com.ucm.ms.accounts.services.AccountSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,11 +15,11 @@ import java.util.Collection;
 @RestController
 @RequestMapping("/accounts")
 @CrossOrigin
-public class AccountsController {
+public class AccountTypeController {
     private final AccountSearch accountSearch;
 
     @Autowired
-    public AccountsController(AccountSearch accountSearch) {
+    public AccountTypeController(AccountSearch accountSearch) {
         this.accountSearch = accountSearch;
     }
 
@@ -28,9 +28,9 @@ public class AccountsController {
      * @return First 50 accounts
      */
     @GetMapping
-    public ResponseEntity<Collection<Account>> get() {
+    public ResponseEntity<Collection<AccountType>> get() {
         try {
-            Collection<Account> accounts = accountSearch.getFirst50();
+            Collection<AccountType> accounts = accountSearch.getFirst50();
             return new ResponseEntity<>(accounts, HttpStatus.valueOf(200));
         } catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

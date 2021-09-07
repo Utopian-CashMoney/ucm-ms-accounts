@@ -1,7 +1,7 @@
 package com.ucm.ms.accounts.services;
 
-import com.ucm.ms.accounts.dao.AccountDAO;
-import com.ucm.ms.accounts.entities.Account;
+import com.ucm.ms.accounts.dao.AccountTypeDAO;
+import com.ucm.ms.accounts.entities.AccountType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +14,14 @@ import java.util.Collection;
 @Service
 @Transactional
 public class AccountSearch {
-    private final AccountDAO accountDAO;
+    private final AccountTypeDAO accountDAO;
 
     /**
      * Uses constructor-based dependency injection.
      * @param accountDAO The Account's DAO
      */
     @Autowired
-    public AccountSearch(AccountDAO accountDAO) {
+    public AccountSearch(AccountTypeDAO accountDAO) {
         this.accountDAO = accountDAO;
     }
 
@@ -29,7 +29,7 @@ public class AccountSearch {
      * Get the first 50 results for all accounts.
      * @return Up to 50 results in a collection. Returns null in event of an error.
      */
-    public Collection<Account> getFirst50() {
+    public Collection<AccountType> getFirst50() {
         return accountDAO.findTop50ByOrderById();
     }
 }
