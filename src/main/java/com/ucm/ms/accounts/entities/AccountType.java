@@ -11,9 +11,9 @@ import java.util.Objects;
 @Entity
 @Table(name = "account_type")
 public class AccountType implements Serializable {
-    private static final long serialVersionUID = -6183304311165530152L;
+	private static final long serialVersionUID = 879129347420706595L;
 
-    //Data
+	//Data
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

@@ -27,7 +27,7 @@ public class UserAccount implements Serializable, IVerifiableEntity {
 	@Column(name = "balance", nullable = false)
 	private BigDecimal balance;
 
-	@Column(name="active", nullable = false)
+	@Column(name="is_active", nullable = false)
 	private Boolean active;
 	
 	// Relationships
@@ -37,8 +37,8 @@ public class UserAccount implements Serializable, IVerifiableEntity {
 	private User user;
 
 	@ManyToOne
-	@JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
-	@JsonManagedReference("UserAccountHasAccount")
+	@JoinColumn(name = "account_type_id", referencedColumnName = "id", nullable = false)
+	@JsonManagedReference("UserAccountHasAccountType")
 	private AccountType accountType;
 
 	// Methods
