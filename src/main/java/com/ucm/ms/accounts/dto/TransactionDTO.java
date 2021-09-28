@@ -8,23 +8,21 @@ import java.util.Objects;
 /**
  * A response object for a single Transaction. Does not contain the ID or its relationships.
  *
- * @author Joshua Podhola
+ * @author Joshua Podhola, Josten Asercion
  */
 public class TransactionDTO implements Serializable {
     private static final long serialVersionUID = 7225650055507280744L;
 
     private String accountNumber;
-    private String reason;
     private BigDecimal amount;
-    private String destination;
+    private String name;
     private LocalDateTime timestamp;
     private String status;
 
-    public TransactionDTO(String accountNumber, String reason, BigDecimal amount, String destination, LocalDateTime timestamp, String status) {
+    public TransactionDTO(String accountNumber, BigDecimal amount, String name, LocalDateTime timestamp, String status) {
         this.accountNumber = accountNumber;
-        this.reason = reason;
         this.amount = amount;
-        this.destination = destination;
+        this.name = name;
         this.timestamp = timestamp;
         this.status = status;
     }
@@ -37,14 +35,6 @@ public class TransactionDTO implements Serializable {
         this.accountNumber = accountNumber;
     }
 
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
     public BigDecimal getAmount() {
         return amount;
     }
@@ -53,12 +43,12 @@ public class TransactionDTO implements Serializable {
         this.amount = amount;
     }
 
-    public String getDestination() {
-        return destination;
+    public String getName() {
+        return name;
     }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LocalDateTime getTimestamp() {
@@ -70,23 +60,23 @@ public class TransactionDTO implements Serializable {
     }
 
     public String getStatus() {
-        return status;
-    }
+		return status;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
-    @Override
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TransactionDTO that = (TransactionDTO) o;
-        return Objects.equals(accountNumber, that.accountNumber) && Objects.equals(reason, that.reason) && Objects.equals(amount, that.amount) && Objects.equals(destination, that.destination) && Objects.equals(timestamp, that.timestamp) && Objects.equals(status, that.status);
+        return Objects.equals(accountNumber, that.accountNumber) && Objects.equals(amount, that.amount) && Objects.equals(name, that.name) && Objects.equals(timestamp, that.timestamp) && Objects.equals(status, that.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(accountNumber, reason, amount, destination, timestamp, status);
+        return Objects.hash(accountNumber, amount, name, timestamp, status);
     }
 }

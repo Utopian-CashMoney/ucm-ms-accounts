@@ -2,7 +2,7 @@ package com.ucm.ms.accounts;
 
 import com.ucm.lib.config.util.JwtUtil;
 import com.ucm.lib.dao.UserDAO;
-import com.ucm.ms.accounts.dao.AccountDAO;
+import com.ucm.ms.accounts.dao.AccountTypeDAO;
 import com.ucm.ms.accounts.dao.UserAccountConfirmationDAO;
 import com.ucm.ms.accounts.dao.UserAccountDAO;
 import org.mockito.Mockito;

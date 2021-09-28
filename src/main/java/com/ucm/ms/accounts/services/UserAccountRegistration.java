@@ -5,12 +5,12 @@ import com.ucm.lib.dao.UserDAO;
 import com.ucm.lib.entities.User;
 import com.ucm.lib.services.EmailService;
 import com.ucm.lib.services.VerificationService;
-import com.ucm.ms.accounts.dao.AccountDAO;
+import com.ucm.ms.accounts.dao.AccountTypeDAO;
 import com.ucm.ms.accounts.dao.UserAccountConfirmationDAO;
 import com.ucm.ms.accounts.dao.UserAccountDAO;
 import com.ucm.ms.accounts.dto.RegisterUserAccountDTO;
 import com.ucm.ms.accounts.dto.RegisterUserAccountRespDTO;
-import com.ucm.ms.accounts.entities.Account;
+import com.ucm.ms.accounts.entities.AccountType;
 import com.ucm.ms.accounts.entities.UserAccount;
 import com.ucm.ms.accounts.entities.UserAccountConfirmation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ import java.util.UUID;
 public class UserAccountRegistration {
     private final UserAccountDAO userAccountDAO;
     private final UserDAO userDAO;
-    private final AccountDAO accountDAO;
+    private final AccountTypeDAO accountDAO;
     private final JwtUtil jwtUtil;
     private final UserAccountConfirmationDAO userAccountConfirmationDAO;
     private final EmailService emailService;
@@ -45,7 +45,7 @@ public class UserAccountRegistration {
     private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
 
     @Autowired
-    public UserAccountRegistration(UserAccountDAO userAccountDAO, UserDAO userDAO, AccountDAO accountDAO,
+    public UserAccountRegistration(UserAccountDAO userAccountDAO, UserDAO userDAO, AccountTypeDAO accountDAO,
                                    JwtUtil jwtUtil, UserAccountConfirmationDAO userAccountConfirmationDAO,
                                    EmailService emailService, VerificationService<UserAccount, UserAccountConfirmation, UserAccountDAO, UserAccountConfirmationDAO> verificationService) {
         this.userAccountDAO = userAccountDAO;
@@ -64,12 +64,12 @@ public class UserAccountRegistration {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Authentication token failed to resolve to a valid user.");
         }
 
-        Account account = accountDAO.findById(registerUserAccountDTO.getAccountID()).orElse(null);
+        AccountType account = accountDAO.findById(registerUserAccountDTO.getAccountID()).orElse(null);
         if(account == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No account with that ID.");
         }
 
-        userAccount.setAccount(account);
+        userAccount.setAccountType(account);
         userAccount.setUser(user);
         userAccount.setBalance(new BigDecimal(0));
         userAccount.setAccountNumber(randomAccountNumber());
@@ -81,8 +81,8 @@ public class UserAccountRegistration {
 
         RegisterUserAccountRespDTO registerUserAccountRespDTO = new RegisterUserAccountRespDTO();
         registerUserAccountRespDTO.setAccountNumber(userAccount.getAccountNumber());
-        registerUserAccountRespDTO.setAccountType(userAccount.getAccount().getType());
-        registerUserAccountRespDTO.setAccountName(userAccount.getAccount().getName());
+        registerUserAccountRespDTO.setAccountType(userAccount.getAccountType().getType());
+        registerUserAccountRespDTO.setAccountName(userAccount.getAccountType().getName());
         return registerUserAccountRespDTO;
     }
 
