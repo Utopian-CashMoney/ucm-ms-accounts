@@ -1,93 +1,48 @@
-pipeline { 
-    agent any 
-    
-    tools { 
-	    maven 'Maven 3.8.1' 
-	    jdk 'jdk1.8' 
+pipeline {
+    agent any
+
+    tools {
+		maven 'Maven 3.8.1'
+		jdk 'jdk1.8'
     }
-	
+
     environment {
-	    COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
-	    
-	    registry = "202447729588.dkr.ecr.us-east-2.amazonaws.com/accounts-ms"
-	 
-	   // AWS_ID = credentials('AWS_ID')
-	    
-	    IMG_NAME = "accountsms"
-	    scannerHome = tool 'SonarqubeScanner'
+        NAME = 'accounts-ms'
+        AWS_REGION = 'us-east-1'
+        GIT_COMMIT = "${env.GIT_COMMIT}"
     }
-    
-    stages { 
-	      stage ('Checkout Git Repo') {
-	        steps {
-	                git branch: 'master', url: 'https://github.com/Utopian-CashMoney/ucm-ms-accounts.git'            
-	        }
-	    }
-	    
-          stage ('Unit Tests') {
-            
+
+    stages {
+        stage('Package Maven project') {
             steps {
-            
-                  sh 'mvn clean test'        
+                sh 'mvn clean package'
             }
         }
 
-	stage ('SonarQube Analysis') {
-            
-	     tools {
-			jdk 'jdk11'
-		}
-		
-             steps {
-                      withSonarQubeEnv('Sonarqube') {
-                          sh 'mvn sonar:sonar'
-                      }
-                  }
-        }   
-	    
-        stage ('Build') {
-            
+        stage('Build Docker image') {
             steps {
-            
-                  sh 'mvn clean package' 
-                
+                sh 'docker build . -t ${NAME}'
             }
         }
-	    
-       stage("Docker Build") {
-	   steps {
-	        echo "Docker Build...."
-		   		   
-		sh "docker build --tag ${IMG_NAME}:${COMMIT_HASH} ."
-		  		   
-	   }
-	       
-	}
-	    
-	stage('Pushing to ECR') {
 		
-             steps{ 
-		    
-                sh 'aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 202447729588.dkr.ecr.us-east-2.amazonaws.com'
-		     		
-		 
-		// Here we are tagging the docker image with the new name which is ECR name and giving the image name which will be stored in ECR   
-		sh "docker tag ${IMG_NAME}:${COMMIT_HASH} ${registry}:${COMMIT_HASH}"
-    		
-		// We are pushing the new created docker image from our initial docker image to ECR
-		 sh "docker push ${registry}:${COMMIT_HASH}"
-		     
-         
-             }
-		
-      }
-	    
-  }
-	    
+        stage('Push to Amazon ECR') {
+            steps {
+                withAWS(credentials: 'jenkins-credentials', region: '${AWS_REGION}') {
+                    sh '''
+                        AWS_ACCOUNT_ID=$(aws sts get-caller-identity | grep -oP \'(?<="Account": ")[^"]*\')
+                        aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+                        docker tag ${NAME}:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:${GIT_COMMIT}
+                        docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:${GIT_COMMIT}
+                    '''
+                }
+            }
+        }
+    }
+
 	post {
-	  always {
-	      sh 'mvn clean'
-	      sh "docker system prune -f"
-	   }
-      }
+		always {
+			sh 'mvn clean'
+			sh 'docker system prune -f'
+		}
+	}
 }
