@@ -9,7 +9,7 @@ pipeline {
     environment {
         NAME = 'accounts-ms'
         AWS_REGION = 'us-east-2'
-        GIT_COMMIT = env.GIT_COMMIT
+        GIT_COMMIT = '${env.GIT_COMMIT}'
     }
 
     stages {
@@ -57,12 +57,12 @@ pipeline {
                 }
         }
     }
-
+    }
     post {
         always {
             sh 'mvn clean'
             sh 'docker system prune -f'
         }
     }
-}
+
 }
