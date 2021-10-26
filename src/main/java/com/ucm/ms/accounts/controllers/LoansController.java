@@ -96,8 +96,7 @@ public class LoansController {
 	 * 
 	 * @return All loans on offer
 	 */
-
-	// WORKINGGG
+	/*
 	@GetMapping("/all_loans")
 	public ResponseEntity<Collection<AccountType>> get(@RequestParam String type) {
 		try {
@@ -108,15 +107,25 @@ public class LoansController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
+	*/
+	
+	@GetMapping
+	public ResponseEntity<Collection<UserLoan>> get() {
+		try {
+			Collection<UserLoan> loans = loanSearch.getAll();
+			return new ResponseEntity<>(loans, HttpStatus.valueOf(200));
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	
 	/**
 	 * 
 	 * @param salary(user), amount of loan, loan Term, loan interest rate.
 	 * @return ResponseEntity
 	 * 
 	 */
-
-	// WORKINGGGGGGGGGG
 
 	@PostMapping("/loansignup")
 	public ResponseEntity<?> signupLoan(@RequestParam int userId, @RequestParam String loanName,

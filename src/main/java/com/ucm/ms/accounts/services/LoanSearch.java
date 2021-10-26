@@ -7,26 +7,38 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ucm.ms.accounts.dao.AccountTypeDAO;
+import com.ucm.ms.accounts.dao.UserLoanDAO;
 import com.ucm.ms.accounts.entities.AccountType;
+import com.ucm.ms.accounts.entities.UserLoan;
 
 @Service
 @Transactional
 public class LoanSearch {
-//    private final LoanTypeDAO loanTypeDAO;
+    private final UserLoanDAO userLoanDAO;
 	
-    private final AccountTypeDAO accountTypeDao;
+//    private final AccountTypeDAO accountTypeDao;
+   
     
     @Autowired
-    public LoanSearch(AccountTypeDAO accountTypeDao) {
-        this.accountTypeDao = accountTypeDao;
+    public LoanSearch(UserLoanDAO userLoanDAO) {
+        this.userLoanDAO = userLoanDAO;
     }
 
+    /*
     public Collection<AccountType> getLoans(String type) {
     	
         return accountTypeDao.getLoans(type);
     }
+    */
     
+    /**
+	 * Get all Loans in DB
+	 * 
+	 * @return Collection of all loans
+	 */
+	public Collection<UserLoan> getAll() {
+		return userLoanDAO.findAll();
+	}
     
 	/**
 	 * 
