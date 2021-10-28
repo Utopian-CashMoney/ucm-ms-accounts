@@ -59,7 +59,7 @@ public class CreateCardService {
 		
 		if(cardInfo.getType().equals("CREDIT") || cardInfo.getType().equals("LOAN")) {
 			createCard.setAllowCredit(true);
-			createCard.setCreditLimit(cardInfo.getCredit_limit());
+			createCard.setCreditLimit(cardInfo.getCreditLimit());
 			createCard.setApr(cardInfo.getApr());
 		}
 		

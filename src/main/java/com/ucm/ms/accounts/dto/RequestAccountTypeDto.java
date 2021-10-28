@@ -13,10 +13,10 @@ public class RequestAccountTypeDto {
 	private String type;
 
 	@NotBlank
-	private Boolean allow_credit;
+	private Boolean allowCredit;
 	
 	@NotBlank
-	private BigDecimal credit_limit;
+	private BigDecimal creditLimit;
 	
 	@NotBlank
 	private Boolean allowCards;
@@ -47,20 +47,20 @@ public class RequestAccountTypeDto {
 
 	
 
-	public Boolean getAllow_credit() {
-		return allow_credit;
+	public Boolean getAllowCredit() {
+		return allowCredit;
 	}
 
-	public void setAllow_credit(Boolean allow_credit) {
-		this.allow_credit = allow_credit;
+	public void setAllowCredit(Boolean allowCredit) {
+		this.allowCredit = allowCredit;
 	}
 
-	public BigDecimal getCredit_limit() {
-		return credit_limit;
+	public BigDecimal getCreditLimit() {
+		return creditLimit;
 	}
 
-	public void setCredit_limit(BigDecimal credit_limit) {
-		this.credit_limit = credit_limit;
+	public void setCreditLimit(BigDecimal creditLimit) {
+		this.creditLimit = creditLimit;
 	}
 
 	public Boolean getAllowCards() {

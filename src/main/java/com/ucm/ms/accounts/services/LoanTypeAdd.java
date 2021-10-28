@@ -63,11 +63,11 @@ public class LoanTypeAdd {
 
 		if(loanTypeRequest.getIs_accepted() == true) {
 			
-			userLoanAdd.saveUserLoan(account_number, loanTypeRequest.getSalary(), loanTypeRequest.getStart_date().now(), true, loanTypeRequest.getTerm());
+			userLoanAdd.saveUserLoan(account_number, loanTypeRequest.getSalary(), loanTypeRequest.getStartDate().now(), true, loanTypeRequest.getTerm());
 
 		}
 		else {
-		userLoanAdd.saveUserLoan(account_number, loanTypeRequest.getSalary(), loanTypeRequest.getStart_date().now(), false, loanTypeRequest.getTerm());
+		userLoanAdd.saveUserLoan(account_number, loanTypeRequest.getSalary(), loanTypeRequest.getStartDate().now(), false, loanTypeRequest.getTerm());
 		}
 	}
 
@@ -129,12 +129,12 @@ public class LoanTypeAdd {
 		accountType.setType("LOAN");
 		accountType.setAllowCredit(true);
 //		accountType.setCreditLimit(accountTypeDto.getCreditLimit());
-		accountType.setCreditLimit(accountTypeDto.getCredit_limit());
+		accountType.setCreditLimit(accountTypeDto.getCreditLimit());
 		accountType.setAllowCards(true);
 		accountType.setApr(accountTypeDto.getApr());
 		accountType.setPerks(accountTypeDto.getPerks());
 		
-		System.out.println("Name: " + accountTypeDto.getName() + " Type: " + accountType.getType() + " AllowCredit: " + accountType.getAllowCredit() + " Credit Limit: " + accountTypeDto.getCredit_limit() + " AllowCard: " + accountType.getAllowCards() + " Apr: " + accountTypeDto.getApr() + " Perks: " +  accountTypeDto.getPerks());
+		System.out.println("Name: " + accountTypeDto.getName() + " Type: " + accountType.getType() + " AllowCredit: " + accountType.getAllowCredit() + " Credit Limit: " + accountTypeDto.getCreditLimit() + " AllowCard: " + accountType.getAllowCards() + " Apr: " + accountTypeDto.getApr() + " Perks: " +  accountTypeDto.getPerks());
 		
 		
 		accountTypeDao.save(accountType);

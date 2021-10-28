@@ -15,10 +15,10 @@ public class RequestUserLoanSignupDto {
 	private int salary;
 
 	@NotBlank
-	private LocalDate start_date;
+	private LocalDate startDate;
 	
 	@NotBlank
-	private Boolean is_accepted;
+	private Boolean isAccepted;
 	
 	@NotBlank
 	private String term;
@@ -49,20 +49,20 @@ public class RequestUserLoanSignupDto {
 
 
 
-	public LocalDate getStart_date() {
-		return start_date;
+	public LocalDate getStartDate() {
+		return startDate;
 	}
 
-	public void setStart_date(LocalDate start_date) {
-		this.start_date = start_date;
+	public void setStart_date(LocalDate startDate) {
+		this.startDate = startDate;
 	}
 
 	public Boolean getIs_accepted() {
-		return is_accepted;
+		return isAccepted;
 	}
 
-	public void setIs_accepted(Boolean is_accepted) {
-		this.is_accepted = is_accepted;
+	public void setIs_accepted(Boolean isAccepted) {
+		this.isAccepted = isAccepted;
 	}
 
 	public String getTerm() {

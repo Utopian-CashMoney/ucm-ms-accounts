@@ -43,9 +43,9 @@ public class UserLoanAdd {
 //	}
 
 	
-	public void saveUserLoan( @Param("account_number") String account_number, @Param("salary") int salary, @Param("start_date") LocalDate start_date, @Param("is_accepted") Boolean is_accepted, @Param("term") String term) {
+	public void saveUserLoan( @Param("account_number") String accountNumber, @Param("salary") int salary, @Param("start_date") LocalDate startDate, @Param("is_accepted") Boolean isAccepted, @Param("term") String term) {
 //		return userLoanDAO.save(userLoan);
-		userLoanDAO.signupUserLoan(account_number, salary, start_date, is_accepted, term);
+		userLoanDAO.signupUserLoan(accountNumber, salary, startDate, isAccepted, term);
 	}
 	
 	
