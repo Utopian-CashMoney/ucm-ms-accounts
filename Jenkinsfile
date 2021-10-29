@@ -1,19 +1,21 @@
 pipeline {
     agent any
 
-    options {
-        buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
-    }
-
     tools {
         maven 'Maven 3.8.1'
         jdk 'jdk1.8'
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
+        withAWS(credentials: 'jenkins-credentials', region: 'us-east-2')
     }
 
     environment {
         NAME = 'accounts-ms'
         AWS_REGION = 'us-east-2'
         GIT_COMMIT = '${env.GIT_COMMIT}'
+        IDENTITY = awsIdentity()
     }
 
     stages {
@@ -80,9 +82,9 @@ pipeline {
                     
                     echo awsIdentity()
                     sh '''
-                        aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${aws_account_id}.dkr.ecr.${AWS_REGION}.amazonaws.com
-                        docker tag ${NAME}:latest ${aws_account_id}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest
-                        docker push ${aws_account_id}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest
+                        aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${IDENTITY.account}.dkr.ecr.${AWS_REGION}.amazonaws.com
+                        docker tag ${NAME}:latest ${IDENTITY.account}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest
+                        docker push ${IDENTITY.account}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest
                     '''
                 }
             }
