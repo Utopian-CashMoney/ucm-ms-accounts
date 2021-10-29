@@ -55,7 +55,7 @@ pipeline {
         stage ('Package Maven Project') {
             steps {
                 // Package project
-                sh 'mvn clean package'
+                sh 'mvn clean package -DskipTests'
             }
         }
 
@@ -86,8 +86,10 @@ pipeline {
 
     post {
         always {
+            sh 'mvn -f ucm-lib/ clean'
             sh 'mvn clean'
             sh 'docker system prune -f'
+            cleanWs()
         }
     }
 }
