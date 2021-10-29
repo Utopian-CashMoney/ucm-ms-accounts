@@ -78,7 +78,7 @@ pipeline {
                     * Push image to ECR
                     */
                     
-                    def aws_account_id = awsIdentity()
+                    echo awsIdentity()
                     sh '''
                         aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${aws_account_id}.dkr.ecr.${AWS_REGION}.amazonaws.com
                         docker tag ${NAME}:latest ${aws_account_id}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest
