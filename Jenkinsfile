@@ -21,7 +21,7 @@ pipeline {
                 }
                 // Run SonarQube scan using running EC2 instance
                 withSonarQubeEnv('SonarQube Scanner') {
-                    sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey= -Dsonar.sources=. -Dsonar.host.url=http://52.55.57.2:81 -Dsonar.login=75b0a4edafa1e19151b1e21e07f411e55af77e67"
+                    sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey= -Dsonar.sources=. -Dsonar.host.url=http://sonar.utopiancashmoney.de -Dsonar.login=0f2c1612c907a52c0256b61ae2fdb9fd70407a8b"
                 }
             }
         }
