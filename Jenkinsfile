@@ -25,9 +25,12 @@ pipeline {
                 }
             }
         }
-        
+
         stage ('Package Maven Project') {
             steps {
+                // Install git submodule of ucm-lib
+                sh 'mvn -f ucm-lib/ clean install'
+                // Package project
                 sh 'mvn clean package'
             }
         }
