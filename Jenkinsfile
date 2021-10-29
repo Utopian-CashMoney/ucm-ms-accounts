@@ -13,6 +13,12 @@ pipeline {
     }
 
     stages {
+        stage ('Pull Git Submodules') {
+            steps {
+                sh "git submodule update --init --recursive"
+            }
+        }
+
         stage ('Code Analysis: ucm-lib') {
             steps {
                 // Set SonarQube home directory, waiting for better way to do this
@@ -21,7 +27,6 @@ pipeline {
                 }
                 // Run SonarQube scan using running EC2 instance
                 withSonarQubeEnv('SonarQube Scanner') {
-                    sh "ls ucm-lib/"
                     sh "mvn -f ucm-lib/ sonar:sonar -Dsonar.host.url=http://sonar.utopiancashmoney.de -Dsonar.login=6bb400486dba3afb9b5592a2955daeb656491d65"
                 }
             }
