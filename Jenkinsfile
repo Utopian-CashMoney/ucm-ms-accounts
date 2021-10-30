@@ -79,11 +79,10 @@ pipeline {
                 */
                 
                 script {
-                    def identity = awsIdentity()
-                    def login = ecrLogin()
-                    sh login
-                    sh 'docker tag ${NAME}:latest ${identity.account}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest'
-                    sh 'docker push ${identity.account}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest'
+                    def aws_account_id = awsIdentity().account
+                    sh ecrLogin()
+                    sh "docker tag ${NAME}:latest ${aws_account_id}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest"
+                    sh "docker push ${aws_account_id}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest"
                 }
                 /*
                 sh '''
