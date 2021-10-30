@@ -1,0 +1,4 @@
+[submodule "ucm-lib"]
+	path = ucm-lib
+	url = https://github.com/Utopian-CashMoney/ucm-lib
+	branch = UC-306
