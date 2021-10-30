@@ -15,7 +15,6 @@ pipeline {
         NAME = 'accounts-ms'
         AWS_REGION = 'us-east-2'
         GIT_COMMIT = '${env.GIT_COMMIT}'
-        IDENTITY = awsIdentity()
     }
 
     stages {
@@ -73,20 +72,27 @@ pipeline {
 
         stage ('Push to ECR') {
             steps {
-                withAWS(credentials: 'jenkins-credentials', region: '${AWS_REGION}') {
-                    /*
-                    * Pull account ID from jenkins-credentials AWS profile
-                    * Login to AWS ECR for private repo access
-                    * Push image to ECR
-                    */
-                    
-                    echo awsIdentity()
-                    sh '''
-                        aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${IDENTITY.account}.dkr.ecr.${AWS_REGION}.amazonaws.com
-                        docker tag ${NAME}:latest ${IDENTITY.account}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest
-                        docker push ${IDENTITY.account}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest
-                    '''
+                /*
+                * Pull account ID from jenkins-credentials AWS profile
+                * Login to AWS ECR for private repo access
+                * Push image to ECR
+                */
+                
+                script {
+                    def identity = awsIdentity()
+                    def login = ecrLogin()
+                    echo login
+                    sh login
+                    sh 'docker tag ${NAME}:latest ${IDENTITY.account}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest'
+                    sh 'docker push ${IDENTITY.account}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest'
                 }
+                /*
+                sh '''
+                    aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${IDENTITY.account}.dkr.ecr.${AWS_REGION}.amazonaws.com
+                    docker tag ${NAME}:latest ${IDENTITY.account}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest
+                    docker push ${IDENTITY.account}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest
+                '''
+                */
             }
         }
     }
