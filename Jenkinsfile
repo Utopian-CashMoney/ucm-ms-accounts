@@ -8,12 +8,12 @@ pipeline {
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
-        withAWS(credentials: 'jenkins-credentials', region: 'us-east-2')
+        withAWS(credentials: 'jenkins-credentials')
     }
 
     environment {
         NAME = 'accounts-ms'
-        AWS_REGION = 'us-east-2'
+        AWS_REGION = 'us-east-1'
         GIT_COMMIT = '${env.GIT_COMMIT}'
     }
 
