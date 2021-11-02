@@ -24,6 +24,13 @@ pipeline {
             }
         }
 
+        stage ('Install Maven: ucm-lib') {
+            steps {
+                // Install git submodule of ucm-lib
+                sh 'mvn -f ucm-lib/ clean install'
+            }
+        }
+
         // stage ('Code Analysis: ucm-lib') {
         //     steps {
         //         // Set SonarQube home directory, waiting for better way to do this
@@ -37,10 +44,10 @@ pipeline {
         //     }
         // }
 
-        stage ('Install Maven: ucm-lib') {
+        stage ('Package Maven Project') {
             steps {
-                // Install git submodule of ucm-lib
-                sh 'mvn -f ucm-lib/ clean install'
+                // Package project
+                sh 'mvn clean package -DskipTests'
             }
         }
 
@@ -56,13 +63,6 @@ pipeline {
         //         }
         //     }
         // }
-
-        stage ('Package Maven Project') {
-            steps {
-                // Package project
-                sh 'mvn clean package -DskipTests'
-            }
-        }
 
         stage ('Build Docker Image') {
             steps {
@@ -84,13 +84,6 @@ pipeline {
                     sh "docker tag ${NAME}:latest ${aws_account_id}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest"
                     sh "docker push ${aws_account_id}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest"
                 }
-                /*
-                sh '''
-                    aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${IDENTITY.account}.dkr.ecr.${AWS_REGION}.amazonaws.com
-                    docker tag ${NAME}:latest ${IDENTITY.account}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest
-                    docker push ${IDENTITY.account}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest
-                '''
-                */
             }
         }
     }
