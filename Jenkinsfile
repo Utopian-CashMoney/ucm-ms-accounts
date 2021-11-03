@@ -31,18 +31,18 @@ pipeline {
             }
         }
 
-        // stage ('Code Analysis: ucm-lib') {
-        //     steps {
-        //         // Set SonarQube home directory, waiting for better way to do this
-        //         script {
-        //             scannerHome = tool 'SonarQube Scanner 4.6'
-        //         }
-        //         // Run SonarQube scan using running EC2 instance
-        //         withSonarQubeEnv('SonarQube Scanner') {
-        //             sh "mvn -f ucm-lib/ sonar:sonar -Dsonar.host.url=http://sonar.utopiancashmoney.de -Dsonar.login=6bb400486dba3afb9b5592a2955daeb656491d65"
-        //         }
-        //     }
-        // }
+        stage ('Code Analysis: ucm-lib') {
+            steps {
+                // Set SonarQube home directory, waiting for better way to do this
+                script {
+                    scannerHome = tool 'SonarQube Scanner 4.6'
+                }
+                // Run SonarQube scan using running EC2 instance
+                withSonarQubeEnv('SonarQube Scanner') {
+                    sh "mvn -f ucm-lib/ sonar:sonar -Dsonar.host.url=http://sonar.utopiancashmoney.de -Dsonar.login=6bb400486dba3afb9b5592a2955daeb656491d65"
+                }
+            }
+        }
 
         stage ('Package Maven Project') {
             steps {
@@ -51,18 +51,18 @@ pipeline {
             }
         }
 
-        // stage ('Code Analysis') {
-        //     steps {
-        //         // Set SonarQube home directory, waiting for better way to do this
-        //         script {
-        //             scannerHome = tool 'SonarQube Scanner 4.6'
-        //         }
-        //         // Run SonarQube scan using running EC2 instance
-        //         withSonarQubeEnv('SonarQube Scanner') {
-        //             sh "mvn sonar:sonar -Dsonar.host.url=http://sonar.utopiancashmoney.de -Dsonar.login=0f2c1612c907a52c0256b61ae2fdb9fd70407a8b"
-        //         }
-        //     }
-        // }
+        stage ('Code Analysis') {
+            steps {
+                // Set SonarQube home directory, waiting for better way to do this
+                script {
+                    scannerHome = tool 'SonarQube Scanner 4.6'
+                }
+                // Run SonarQube scan using running EC2 instance
+                withSonarQubeEnv('SonarQube Scanner') {
+                    sh "mvn sonar:sonar -Dsonar.host.url=http://sonar.utopiancashmoney.de -Dsonar.login=0f2c1612c907a52c0256b61ae2fdb9fd70407a8b"
+                }
+            }
+        }
 
         stage ('Build Docker Image') {
             steps {
