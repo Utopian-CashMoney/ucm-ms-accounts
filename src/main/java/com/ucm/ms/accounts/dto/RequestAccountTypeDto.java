@@ -43,10 +43,6 @@ public class RequestAccountTypeDto {
 		this.type = type;
 	}
 
-	
-
-	
-
 	public Boolean getAllowCredit() {
 		return allowCredit;
 	}
@@ -86,10 +82,4 @@ public class RequestAccountTypeDto {
 	public void setPerks(String perks) {
 		this.perks = perks;
 	}
-	
-	
-	
-	
-	
-
 }

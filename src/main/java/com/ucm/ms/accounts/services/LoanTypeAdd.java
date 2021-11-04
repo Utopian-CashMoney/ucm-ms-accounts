@@ -42,19 +42,6 @@ public class LoanTypeAdd {
 
 	/**
 	 * 
-	 * @param loan
-	 * @return Loan(Entity)
-	 * 
-	 */
-
-//	public LoanType saveLoan(LoanType loantype) {
-//		return loanTypeDAO.save(loantype);
-//	}
-
-
-
-	/**
-	 * 
 	 * @param userId, loanRequest(body)
 	 * @return void
 	 * 
@@ -70,7 +57,6 @@ public class LoanTypeAdd {
 		userLoanAdd.saveUserLoan(account_number, loanTypeRequest.getSalary(), loanTypeRequest.getStartDate().now(), false, loanTypeRequest.getTerm());
 		}
 	}
-
 
 
 	/**
@@ -117,20 +103,12 @@ public class LoanTypeAdd {
 	
 	public void createLoan(RequestAccountTypeDto accountTypeDto) {
 		AccountType accountType = new AccountType();
-		
-//		accountType.setMaxAmount(accountTypeDto.getMax_amount());
-//		accountType.setName(accountTypeDto.getName());
-//		accountType.setInterestRate(accountTypeDto.getInterest_rate());
-//		accountType.setTerm(accountTypeDto.getTerm());
-		
-//		System.out.println("Name: " + accountTypeDto.getName() + " Type: " + accountTypeDto.getType() + " AllowCredit: " + accountTypeDto.getAllowCredit() + " Credit Limit: " + accountTypeDto.getCreditLimit() + " AllowCard: " + accountTypeDto.getAllowCards() + " Apr: " + accountTypeDto.getApr() + " Perks: " +  accountTypeDto.getPerks());
-		
+			
 		accountType.setName(accountTypeDto.getName());
 		accountType.setType("LOAN");
 		accountType.setAllowCredit(true);
-//		accountType.setCreditLimit(accountTypeDto.getCreditLimit());
 		accountType.setCreditLimit(accountTypeDto.getCreditLimit());
-		accountType.setAllowCards(true);
+		accountType.setAllowCards(false);
 		accountType.setApr(accountTypeDto.getApr());
 		accountType.setPerks(accountTypeDto.getPerks());
 		
@@ -139,7 +117,4 @@ public class LoanTypeAdd {
 		
 		accountTypeDao.save(accountType);
 	}
-
-
-
 }

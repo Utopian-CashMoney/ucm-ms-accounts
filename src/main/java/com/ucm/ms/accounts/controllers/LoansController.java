@@ -54,10 +54,9 @@ import com.ucm.ms.accounts.services.UserLoanAdd;
  * @author Charvin Patel
  */
 
-
 @RestController
-@RequestMapping("/loans")
 @CrossOrigin
+@RequestMapping("/loans")
 
 public class LoansController {
 
@@ -97,18 +96,13 @@ public class LoansController {
 	 * @return All loans on offer
 	 */
 	/*
-	@GetMapping("/all_loans")
-	public ResponseEntity<Collection<AccountType>> get(@RequestParam String type) {
-		try {
-			Collection<AccountType> loans = loanSearch.getLoans(type);
-			System.out.println("HEREEE");
-			return new ResponseEntity<>(loans, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	*/
-	
+	 * @GetMapping("/all_loans") public ResponseEntity<Collection<AccountType>>
+	 * get(@RequestParam String type) { try { Collection<AccountType> loans =
+	 * loanSearch.getLoans(type); System.out.println("HEREEE"); return new
+	 * ResponseEntity<>(loans, HttpStatus.OK); } catch (Exception e) { return new
+	 * ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); } }
+	 */
+
 	@GetMapping
 	public ResponseEntity<Collection<UserLoan>> get() {
 		try {
@@ -118,8 +112,7 @@ public class LoansController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	
+
 	/**
 	 * 
 	 * @param salary(user), amount of loan, loan Term, loan interest rate.
@@ -200,8 +193,8 @@ public class LoansController {
 				UserAccount userAccount = new UserAccount();
 				userAccount.setAccountNumber(String.valueOf(accountNumber));
 				userAccount.setUser(user);
-			//	userAccount.setAccount_type(accountTypeDAO.getIdByName(loanRequest.getName()));
-				
+				// userAccount.setAccount_type(accountTypeDAO.getIdByName(loanRequest.getName()));
+
 				userAccount.setAccountType(accountTypeDAO.getAccountTypeByName(loanRequest.getName()));
 
 				userAccount.setBalance(loanRequest.getBalance());
@@ -214,7 +207,7 @@ public class LoansController {
 				// Mocking a delay for 10s when a loan manager tries to review the loan
 				// application
 				// and makes the decision, but these delays the navigation to next webpage
-				//Thread.sleep(10 * 1000);
+				// Thread.sleep(10 * 1000);
 
 				UserLoan userLoan = new UserLoan();
 				userLoan.setStatus("IN REVIEW");
@@ -223,7 +216,7 @@ public class LoansController {
 				// Mocking a delay for 10s when a loan manager tries to review the loan
 				// application
 				// and makes the decision, but these delays the navigation to next webpage
-			    // Thread.sleep(10 * 1000);
+				// Thread.sleep(10 * 1000);
 				userLoan.setStatus("APPROVED");
 				userLoanDAO.updateStatusByUserAccount(String.valueOf(accountNumber), userLoan.getStatus());
 
@@ -256,23 +249,20 @@ public class LoansController {
 				loanRequest.setIs_accepted(false);
 				loanTypeAdd.signUpLoan(loanRequest.getBalance(), String.valueOf(accountNumber), loanRequest);
 
-				
 				// Mocking a delay for 10s when a loan manager tries to review the loan
 				// application
 				// and makes the decision, but these delays the navigation to next webpage
-				//Thread.sleep(10 * 1000);
+				// Thread.sleep(10 * 1000);
 				userLoan.setStatus("IN REVIEW");
 				userLoanDAO.updateStatusByUserAccount(String.valueOf(accountNumber), userLoan.getStatus());
-				
+
 				// Mocking a delay for 10s when a loan manager tries to review the loan
 				// application
 				// and makes the decision, but these delays the navigation to next webpage
-				//Thread.sleep(10 * 1000);
+				// Thread.sleep(10 * 1000);
 				userLoan.setStatus("DECLINED");
 				userLoanDAO.updateStatusByUserAccount(String.valueOf(accountNumber), userLoan.getStatus());
 
-
-				
 				message.setFrom(new InternetAddress(from));
 
 				message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
@@ -286,11 +276,8 @@ public class LoansController {
 				Transport.send(message);
 
 			} catch (Exception e) {
-
 			}
-
 		}
-
 	}
 
 	/**
@@ -301,40 +288,32 @@ public class LoansController {
 	 */
 
 	// WORKINGGGGGGGGGGGGGGG
-
+	@CrossOrigin
 	@PostMapping("/createLoans")
 	public void createLoans(@RequestBody RequestAccountTypeDto accountTypeDto) {
 
 		loanTypeAdd.createLoan(accountTypeDto);
 
 	}
-	
-	
+
 	// WORKINGGG
 	@GetMapping("/loan_status")
 	public ResponseEntity<Collection<UserLoan>> loanStatus(@RequestParam String userId) {
 		try {
-			
+
 			User user = userDao.getUserById(Integer.valueOf(userId));
 
 			Collection<UserAccount> userAccount = userAccountDAO.getUserAccountByUserId(user.getId());
 			Collection<UserLoan> ul = new ArrayList<>();
-			
-			for(UserAccount u : userAccount) {
+
+			for (UserAccount u : userAccount) {
 				ul.addAll(userLoanDAO.getUserLoanByAccountNumber(u.getAccountNumber()));
-				
 			}
-				
-						
+
 			return new ResponseEntity<>(ul, HttpStatus.OK);
 
-
-			
-			
-			
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
 }
