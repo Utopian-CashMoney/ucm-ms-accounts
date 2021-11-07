@@ -1,12 +1,6 @@
 package com.ucm.ms.accounts.controllers;
 
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
-import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,13 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ucm.lib.dao.UserRepository;
-import com.ucm.lib.entities.User;
 import com.ucm.ms.accounts.dao.AccountTypeDAO;
 import com.ucm.ms.accounts.dao.CreditCardDAO;
 import com.ucm.ms.accounts.dao.UserAccountDAO;
 import com.ucm.ms.accounts.entities.AccountType;
 import com.ucm.ms.accounts.entities.CreditCard;
-import com.ucm.ms.accounts.entities.UserAccount;
 import com.ucm.ms.accounts.services.CreateCardService;
 import com.ucm.ms.accounts.services.CreditCardSearch;
 
@@ -65,7 +57,7 @@ public class CreditCardController {
 		 */
 	
 	
-		@GetMapping(path="credit_card_on_offer")
+		@GetMapping(path="get_credit_cards")
 		public ResponseEntity<Collection<CreditCard>> getCreditCardOnOffer() {
 			try {
 				Collection<CreditCard> cards = creditCardSearch.getAll();
@@ -78,7 +70,7 @@ public class CreditCardController {
 	
 		
 		
-		@GetMapping(path = "get_credit_cards")
+		@GetMapping(path = "credit_card_on_offer")
 		public ResponseEntity<Collection<AccountType>> getCreditCards() {
 
 			try {

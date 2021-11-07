@@ -56,23 +56,8 @@ public class UserAccountsController {
         return modelAndView;
     }
     
-    /**
-     * GET /api/user_account - Return all user accounts
-     * @return All user accounts
-     */
-    @GetMapping
-    public ResponseEntity<Collection<UserAccount>> get() {
-        try {
-            Collection<UserAccount> userAccounts = userAccountSearch.getAll();
-            return new ResponseEntity<>(userAccounts, HttpStatus.valueOf(200));
-        } catch(Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
     
-    
-    
-	@GetMapping("/user_accounts")
+	@GetMapping("/accounts")
 	public ResponseEntity<Collection<UserAccount>> getUserAccounts(@RequestParam String userId) {
 
 		int usersId = Integer.parseInt(userId);
