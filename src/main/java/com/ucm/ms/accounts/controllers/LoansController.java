@@ -43,6 +43,7 @@ import com.ucm.ms.accounts.dto.ResponseLoanMonthlyPaymentDto;
 import com.ucm.ms.accounts.entities.UserAccount;
 import com.ucm.ms.accounts.entities.UserAccountActivity;
 import com.ucm.ms.accounts.entities.UserLoan;
+import com.ucm.ms.accounts.services.LoanPaymentService;
 import com.ucm.ms.accounts.services.LoanSearch;
 import com.ucm.ms.accounts.services.LoanTypeAdd;
 import com.ucm.ms.accounts.services.UserLoanAdd;
@@ -82,6 +83,9 @@ public class LoansController {
 	AccountTypeDAO accountTypeDAO;
 
 	RequestUserAccountDto userAccountDto;
+	
+	@Autowired
+	LoanPaymentService loanPaymentService;
 	
 	
 	@Autowired
@@ -347,48 +351,8 @@ public class LoansController {
 	
 	
 	@PostMapping("/submit_payment")
-	public void createLoans(@RequestParam int userId, @RequestParam double amount, @RequestParam String payeeAccountNumber) {
-		
-		UserAccount userAccount = userAccountDAO.getUserAccount(userId, 9);	
-		UserAccount payeeAccount = userAccountDAO.getUserAccountByAccountNumber(payeeAccountNumber);
-		
-		Date todaysDate = new Date();
-		todaysDate.getDate();
-		Random rnd = new Random();
-		int transactionId = rnd.nextInt(999999999);
-		
-		UserAccountActivity userAccountActivity = new UserAccountActivity();
-						
-		
-		// If amount to be paid is greater then available balance or there is no outstanding balance to be paid.
-		if (amount > userAccount.getBalance().doubleValue() || amount > payeeAccount.getBalance().doubleValue()) {
-			throw new Error("Not Enough Money in account to pay");
-		}
-				
-		
-		else if(amount <= userAccount.getBalance().doubleValue() && amount <= payeeAccount.getBalance().doubleValue()) {
-			
-		// Subtracting checking account's balance after user pays loan and credit card.
-		userAccount.setBalance(BigDecimal.valueOf(userAccount.getBalance().doubleValue() - amount));
-		
-		// Subtracting payees account balance since the amount is paid.
-		payeeAccount.setBalance(BigDecimal.valueOf(payeeAccount.getBalance().doubleValue() - amount));
-		
-		userAccountActivity.setActivityId(transactionId);
-		userAccountActivity.setDate(todaysDate);
-		userAccountActivity.setDescription("made a payment to account" + " " +  payeeAccount.getAccountType().getName() + " " + payeeAccountNumber + " transaction #: " + transactionId);
-		userAccountActivity.setType("");
-		userAccountActivity.setAmount(BigDecimal.valueOf(amount));
-		userAccountActivity.setPayeeAccountNumber(payeeAccountNumber);
-		userAccountActivity.setUserAccount(userAccount);
-		
-		userAccountActivityDao.save(userAccountActivity);
-				
-		
-		}
-		
-		userAccountDAO.save(userAccount);
-
+	public void loanPayment(@RequestParam int userId, @RequestParam double amount, @RequestParam String payeeAccountNumber) {
+		loanPaymentService.loanPayment(userId, amount, payeeAccountNumber);
 	}
 	
 	@GetMapping("/account_activity")

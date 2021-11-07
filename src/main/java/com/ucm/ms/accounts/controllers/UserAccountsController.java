@@ -21,7 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 @CrossOrigin
 public class UserAccountsController {
     private final UserAccountRegistration userAccountRegistration;
-    private final UserAccountSearch userAccountSearch;
+    private final UserAccountSearch userAccountSearch;	
+    @Autowired
+	UserAccountDAO userAccountDao;
+    
 
     @Autowired
     public UserAccountsController(UserAccountRegistration userAccountRegistration, UserAccountSearch userAccountSearch) {
@@ -66,4 +69,21 @@ public class UserAccountsController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    
+    
+	@GetMapping("/user_accounts")
+	public ResponseEntity<Collection<UserAccount>> getUserAccounts(@RequestParam String userId) {
+
+		int usersId = Integer.parseInt(userId);
+
+		Collection<UserAccount> userAccount = userAccountDao.getUserAccounts(usersId);	
+		
+		for(UserAccount u : userAccount) {
+			System.out.println("uuuuuuuuu: " + u.getAccountNumber());
+		}
+		
+
+		return new ResponseEntity<>(userAccount, HttpStatus.valueOf(200));
+	}
 }
