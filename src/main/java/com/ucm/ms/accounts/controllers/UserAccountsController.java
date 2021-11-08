@@ -21,7 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 @CrossOrigin
 public class UserAccountsController {
     private final UserAccountRegistration userAccountRegistration;
-    private final UserAccountSearch userAccountSearch;
+    private final UserAccountSearch userAccountSearch;	
+    @Autowired
+	UserAccountDAO userAccountDao;
+    
 
     @Autowired
     public UserAccountsController(UserAccountRegistration userAccountRegistration, UserAccountSearch userAccountSearch) {
@@ -53,17 +56,15 @@ public class UserAccountsController {
         return modelAndView;
     }
     
-    /**
-     * GET /api/user_account - Return all user accounts
-     * @return All user accounts
-     */
-    @GetMapping
-    public ResponseEntity<Collection<UserAccount>> get() {
-        try {
-            Collection<UserAccount> userAccounts = userAccountSearch.getAll();
-            return new ResponseEntity<>(userAccounts, HttpStatus.valueOf(200));
-        } catch(Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+    
+	@GetMapping("/accounts")
+	public ResponseEntity<Collection<UserAccount>> getUserAccounts(@RequestParam String userId) {
+
+		int usersId = Integer.parseInt(userId);
+
+		Collection<UserAccount> userAccount = userAccountDao.getUserAccounts(usersId);	
+		
+
+		return new ResponseEntity<>(userAccount, HttpStatus.valueOf(200));
+	}
 }

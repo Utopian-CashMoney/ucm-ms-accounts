@@ -86,6 +86,16 @@ public class CreditCard implements Serializable{
 	public void setCvv(Integer cvv) {
 		this.cvv = cvv;
 	}
+	
+	
+
+	public UserAccount getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(UserAccount userAccount) {
+		this.userAccount = userAccount;
+	}
 
 	@Override
 	public int hashCode() {
