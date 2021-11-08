@@ -3,7 +3,10 @@ package com.ucm.ms.accounts.services;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import javax.transaction.Transactional;
@@ -99,7 +102,18 @@ public class CreateCardService {
 
 
 		// put a check here for unique account number
+		
+		Collection<UserAccount> userAccounts = userAccountDao.getUserAccounts(userId);
+		List<UserAccount> userLoanAccounts = new ArrayList<UserAccount>();
+		
+		for(UserAccount account: userAccounts) {
+			if(account.getAccountType().equals("LOAN") || account.getAccountType().equals("CREDIT"));
+			userLoanAccounts.add(account);		
+		}
 
+		
+		// Only allow user to signup for a card if the user has 3 or less active loans
+		if(!(userLoanAccounts.size() >= 3)) {			
 
 		Random rnd = new Random();
 		int accountNumber = rnd.nextInt(999999999);
@@ -115,7 +129,6 @@ public class CreateCardService {
 		userAccount.setBalance(BigDecimal.valueOf(10000.00));
 		userAccount.setActive(true);
 
-		System.out.println("HEREEE: " + userAccount.getAccountNumber());
 
 		// ALSO ADD DATA TO CREDIT_CARD TABLE HEREE AS WELL
 		
@@ -162,6 +175,10 @@ public class CreateCardService {
 			userAccountDao.save(userAccount);
 			creditCardDao.save(creditCard);	
 			
+	}
+		else {
+			throw new Error();
+		}
 	}
 	
 }

@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
@@ -48,6 +49,8 @@ import com.ucm.ms.accounts.services.LoanSearch;
 import com.ucm.ms.accounts.services.LoanTypeAdd;
 import com.ucm.ms.accounts.services.UserLoanAdd;
 
+import net.bytebuddy.implementation.bytecode.Throw;
+
 /**
  * Controller Class for Handling API calls
  * 
@@ -75,6 +78,9 @@ public class LoansController {
 
 	@Autowired
 	UserLoanDAO userLoanDAO;
+	
+	@Autowired
+	UserAccountDAO userAccountDao;
 
 	@Autowired
 	UserAccountDAO userAccountDAO;
@@ -141,6 +147,20 @@ public class LoansController {
 	public ResponseEntity<?> signupLoan(@RequestParam int userId, @RequestParam String loanName,
 			@RequestParam int salary, @RequestParam int amount, @RequestParam int term,
 			@RequestParam double interestRate) {
+		
+		
+		Collection<UserAccount> userAccounts = userAccountDao.getUserAccounts(userId);
+		List<UserAccount> userLoanAccounts = new ArrayList<UserAccount>();
+		
+		for(UserAccount account: userAccounts) {
+			if(account.getAccountType().equals("LOAN") || account.getAccountType().equals("CREDIT"));
+			userLoanAccounts.add(account);		
+		}
+
+		
+		// Only allow user to signup for a card if the user has 3 or less active loans
+		if(!(userLoanAccounts.size() >= 3)) {			
+			
 
 		DecimalFormat df = new DecimalFormat("###.##");
 
@@ -153,9 +173,13 @@ public class LoansController {
 		double totalPayments = loanTypeAdd.calculateTotalPayment(monthlyPayments, termInMonths);
 
 		loanDto.setPayments(Double.valueOf(df.format((monthlyPayments))));
-		loanDto.setTotalPayment(Double.valueOf(df.format((totalPayments))));
+		loanDto.setTotalPayment(Double.valueOf(df.format((totalPayments))));		
 
 		return ResponseEntity.ok((new ResponseLoanMonthlyPaymentDto(loanDto.getPayments(), loanDto.getTotalPayment())));
+		}
+		else {
+			throw new Error();
+		}
 
 	}
 
@@ -312,8 +336,7 @@ public class LoansController {
 	 * 
 	 */
 
-	// WORKINGGGGGGGGGGGGGGG
-
+	
 	@PostMapping("/createLoans")
 	public void createLoans(@RequestBody RequestAccountTypeDto accountTypeDto) {
 
@@ -322,7 +345,6 @@ public class LoansController {
 	}
 	
 	
-	// WORKINGGG
 	@GetMapping("/loan_status")
 	public ResponseEntity<Collection<UserLoan>> loanStatus(@RequestParam String userId) {
 		try {

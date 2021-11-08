@@ -64,10 +64,6 @@ public class UserAccountsController {
 
 		Collection<UserAccount> userAccount = userAccountDao.getUserAccounts(usersId);	
 		
-		for(UserAccount u : userAccount) {
-			System.out.println("uuuuuuuuu: " + u.getAccountNumber());
-		}
-		
 
 		return new ResponseEntity<>(userAccount, HttpStatus.valueOf(200));
 	}

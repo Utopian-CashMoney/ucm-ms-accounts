@@ -76,8 +76,6 @@ public class CreditCardController {
 			try {
 
 				Collection<AccountType> creditCards = accountTypeDao.getCreditCards();
-				System.out.println("INSIDE ACCOUNTS CARDS");
-
 				return new ResponseEntity<>(creditCards, HttpStatus.OK);
 
 			} catch (Exception e) {
