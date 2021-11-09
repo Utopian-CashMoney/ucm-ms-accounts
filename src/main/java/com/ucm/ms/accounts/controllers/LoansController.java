@@ -280,22 +280,6 @@ public class LoansController {
 		}
 	}
 
-	/**
-	 * 
-	 * @param RequestCreateLoanDto
-	 * @return void
-	 * 
-	 */
-
-	// WORKINGGGGGGGGGGGGGGG
-	@CrossOrigin
-	@PostMapping("/createLoans")
-	public void createLoans(@RequestBody RequestAccountTypeDto accountTypeDto) {
-
-		loanTypeAdd.createLoan(accountTypeDto);
-
-	}
-
 	// WORKINGGG
 	@GetMapping("/loan_status")
 	public ResponseEntity<Collection<UserLoan>> loanStatus(@RequestParam String userId) {

@@ -1,22 +1,32 @@
 package com.ucm.ms.accounts.controllers;
 
+import com.ucm.ms.accounts.dto.RequestAccountTypeDto;
 import com.ucm.ms.accounts.entities.AccountType;
 import com.ucm.ms.accounts.services.AccountSearch;
+import com.ucm.ms.accounts.services.AccountTypeAdd;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/accounts")
 @CrossOrigin
+@RequestMapping("/accounts")
 public class AccountTypeController {
-    private final AccountSearch accountSearch;
+	
+	@Autowired
+    AccountSearch accountSearch;
+	
+	@Autowired
+	AccountTypeAdd accountTypeService;
 
     @Autowired
     public AccountTypeController(AccountSearch accountSearch) {
@@ -36,4 +46,15 @@ public class AccountTypeController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    /**
+     * Used for creating new account types
+     * @param RequestAccountTypeDto
+     * 
+     */
+    @PostMapping
+	public void createAccountType(@RequestBody RequestAccountTypeDto accountTypeInfo) {
+		accountTypeService.createAccountType(accountTypeInfo);
+	}
+
 }
