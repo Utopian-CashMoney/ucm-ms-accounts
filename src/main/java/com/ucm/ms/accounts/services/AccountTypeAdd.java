@@ -42,7 +42,7 @@ public class AccountTypeAdd {
 			accountType.setAllowCredit(true);
 			accountType.setCreditLimit(accountTypeInfo.getCreditLimit());
 			accountType.setAllowCards(true);
-			accountType.setApr(accountType.getApr());
+			accountType.setApr(accountTypeInfo.getApr());
 			break;
 		case "DEBIT":
 			accountType.setAllowCredit(false);
@@ -54,7 +54,7 @@ public class AccountTypeAdd {
 			accountType.setAllowCredit(true);
 			accountType.setCreditLimit(accountTypeInfo.getCreditLimit());
 			accountType.setAllowCards(false);
-			accountType.setApr(accountType.getApr());
+			accountType.setApr(accountTypeInfo.getApr());
 			break;
 		//If it gets to default, something went really wrong
 		default:
