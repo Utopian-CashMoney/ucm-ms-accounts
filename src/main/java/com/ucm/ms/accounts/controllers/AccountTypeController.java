@@ -3,13 +3,15 @@ package com.ucm.ms.accounts.controllers;
 import com.ucm.ms.accounts.dto.RequestAccountTypeDto;
 import com.ucm.ms.accounts.entities.AccountType;
 import com.ucm.ms.accounts.services.AccountSearch;
-import com.ucm.ms.accounts.services.AccountTypeAdd;
+import com.ucm.ms.accounts.services.AccountTypeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +28,7 @@ public class AccountTypeController {
     AccountSearch accountSearch;
 	
 	@Autowired
-	AccountTypeAdd accountTypeService;
+	AccountTypeService accountTypeService;
 
     @Autowired
     public AccountTypeController(AccountSearch accountSearch) {
@@ -57,4 +59,13 @@ public class AccountTypeController {
 		accountTypeService.createAccountType(accountTypeInfo);
 	}
 
+    /**
+     * Used for deleting account types
+     * @param Integer id of the account types
+     * 
+     */
+    @DeleteMapping("/{id}")
+	public void deleteAccountType(@PathVariable Integer id) {
+		accountTypeService.deleteAccountType(id);
+	}
 }

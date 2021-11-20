@@ -12,14 +12,14 @@ import com.ucm.ms.accounts.dto.RequestAccountTypeDto;
 import com.ucm.ms.accounts.entities.AccountType;
 
 /**
- * Service class for adding new account types
+ * Service class for account types
  * 
  * @author Josten Asercion (with much credit to Charvin Patel for reference)
  */
 @Service
 @Transactional
-public class AccountTypeAdd {
-
+public class AccountTypeService {
+	
 	@Autowired
 	AccountTypeDAO accountTypeDAO;
 
@@ -62,5 +62,13 @@ public class AccountTypeAdd {
 		}
 		
 		accountTypeDAO.save(accountType);
+	}
+	
+	/**
+	 * @param accountTypeInfo The data from the forms to create an account type
+	 */
+	public void deleteAccountType(Integer id) {
+		accountTypeDAO.deleteById(id);
+	
 	}
 }
