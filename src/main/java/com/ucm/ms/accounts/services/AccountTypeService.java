@@ -65,7 +65,23 @@ public class AccountTypeService {
 	}
 	
 	/**
-	 * @param accountTypeInfo The data from the forms to create an account type
+	 * @param id the id of the account type to modify
+	 */
+	public void editAccountType(Integer id, RequestAccountTypeDto accountTypeInfo) {
+		AccountType accountType = accountTypeDAO.getAccountTypeById(id);
+		accountType.setName(accountTypeInfo.getName());
+		accountType.setPerks(accountTypeInfo.getPerks());
+		
+		if(accountType.getType().equals("CREDIT")||accountType.getType().equals("CREDIT")) {
+			accountType.setCreditLimit(accountTypeInfo.getCreditLimit());
+			accountType.setApr(accountTypeInfo.getApr());
+		}
+		
+		accountTypeDAO.save(accountType);
+	}
+	
+	/**
+	 * @param id the id of the account type to delete
 	 */
 	public void deleteAccountType(Integer id) {
 		accountTypeDAO.deleteById(id);
